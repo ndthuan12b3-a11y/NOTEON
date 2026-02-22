@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Note OS Pro - Supabase Cloud Connected</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; min-height: 100vh; overflow-x: hidden; transition: background-color 0.6s; }
+        .bento-card { backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; cursor: context-menu; }
+        .bento-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); }
+        body.trash-mode .bento-card { border-color: rgba(239, 68, 68, 0.2); background: rgba(69, 10, 10, 0.4) !important; }
+        body.trash-mode .bento-card:hover { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 15px 30px rgba(239, 68, 68, 0.15); }
+        .context-menu { display: none; position: fixed; z-index: 1000; width: 220px; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        .menu-item { padding: 10px 12px; display: flex; align-items: center; gap: 10px; font-size: 13px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        .menu-item:hover { background: #3b82f6; color: white; }
+        .blur-screen { filter: blur(30px) brightness(0.5); pointer-events: none; }
+        .tag-active { background: #3b82f6 !important; border-color: #60a5fa !important; color: white !important; }
+        body.trash-mode .tag-active { background: #ef4444 !important; border-color: #f87171 !important; }
+        .color-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; position: relative; }
+        .color-dot.active::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
+        body.trash-mode ::-webkit-scrollbar-thumb { background: #450a0a; }
+        #lockScreen { background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); }
+    </style>
+</head>
+<body id="appBody" oncontextmenu="handleContextMenu(event)" onclick="hideMenus()">
+
+    <div id="lockScreen" class="fixed inset-0 z-[5000] flex items-center justify-center transition-all duration-700">
+        <div class="max-w-md w-full p-10 text-center bg-slate-900/50 backdrop-blur-2xl border border-slate-700 rounded-[3rem] shadow-[0_0_100px_rgba(59,130,246,0.15)] transform transition-transform duration-500 hover:scale-105">
+            <div class="mb-8 flex justify-center relative">
+                <div class="absolute inset-0 bg-blue-500 blur-2xl opacity-20 rounded-full animate-pulse"></div>
+                <div class="p-5 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-full relative z-10"><i data-lucide="cloud" class="w-14 h-14 text-blue-400"></i></div>
+            </div>
+            <h2 class="text-3xl font-black mb-2 uppercase tracking-widest text-white drop-shadow-lg">CLOUD SYNC</h2>
+            <p class="text-slate-400 text-sm mb-8">Nhập mã khóa để kết nối Dữ liệu</p>
+            <input type="password" id="accessKey" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-2xl py-4 px-6 mb-6 text-center outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 font-bold tracking-[0.5em] text-white transition-all">
+            <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2">
+                <span>KẾT NỐI DATABASE</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="ctxMenu" class="context-menu">
+        <div id="noteActions" style="display:none">
+            <div class="menu-item" onclick="window.openEditModal()"><i data-lucide="edit-3" class="w-4 h-4 text-blue-400"></i> Chỉnh sửa</div>
+            <div class="menu-item" onclick="window.completeNote()"><i data-lucide="check-circle" class="w-4 h-4 text-green-400"></i> Hoàn thành</div>
+            <div class="h-[1px] bg-white/5 my-2"></div>
+            <div class="menu-item text-red-400 hover:!bg-red-500" onclick="window.completeNote()"><i data-lucide="trash-2" class="w-4 h-4"></i> Đưa vào thùng rác</div>
+        </div>
+        <div id="trashActions" style="display:none">
+            <div class="menu-item" onclick="window.restoreNote()"><i data-lucide="rotate-ccw" class="w-4 h-4 text-green-400"></i> Khôi phục lại</div>
+            <div class="menu-item text-red-500 font-bold hover:!bg-red-600" onclick="window.permanentlyDelete()"><i data-lucide="x-octagon" class="w-4 h-4"></i> XÓA VĨNH VIỄN</div>
+        </div>
+        <div id="globalActions" style="display:none">
+            <div class="menu-item" onclick="window.openAddModal()"><i data-lucide="plus-circle" class="w-4 h-4 text-green-400"></i> Viết ghi chú mới</div>
+            <div class="menu-item" onclick="window.openCatManager()"><i data-lucide="tag" class="w-4 h-4 text-purple-400"></i> Quản lý phân loại</div>
+        </div>
+    </div>
+
+    <main id="mainApp" class="blur-screen max-w-7xl mx-auto px-6 py-12 transition-all duration-700">
+        <header class="flex flex-col lg:flex-row justify-between items-end mb-12 gap-6">
+            <div>
+                <h1 id="headerTitle" class="text-6xl font-black tracking-tighter italic uppercase leading-tight"></h1>
+                <p class="text-slate-400 font-semibold mt-3 flex items-center gap-2 tracking-widest text-xs uppercase">
+                    <span id="statusDot" class="w-2.5 h-2.5 rounded-full animate-pulse"></span>
+                    <span id="keyLabel">Đang đồng bộ</span>
+                </p>
+            </div>
+            <div class="flex gap-4 w-full md:w-auto items-center">
+                <div class="relative flex-1 md:w-80">
+                    <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-slate-500"></i>
+                    <input type="text" id="searchInput" oninput="render()" placeholder="Tìm kiếm tài liệu..." class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-3 pl-12 pr-4 outline-none focus:border-blue-500 transition-all shadow-inner text-white font-medium">
+                </div>
+                <button onclick="lockAgain()" class="bg-slate-800 p-3.5 rounded-2xl border border-slate-700 hover:bg-red-500/20 hover:text-red-500 hover:border-red-500 transition-all shadow-lg active:scale-90" title="Đóng kết nối">
+                    <i data-lucide="power" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </header>
+
+        <div id="filterBar" class="flex gap-3 mb-10 overflow-x-auto pb-4 scroll-smooth"></div>
+        <div id="notesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+
+        <div class="fixed bottom-10 right-10 flex flex-col gap-4 items-end z-40">
+            <button id="clearTrashBtn" style="display:none" onclick="window.clearFullTrash()" class="bg-red-600/90 backdrop-blur-md text-white border border-red-400 px-6 py-3 rounded-2xl text-xs font-black hover:bg-red-500 transition-all shadow-[0_0_30px_rgba(239,68,68,0.4)] active:scale-95 tracking-widest">DỌN SẠCH 100 MỤC RÁC</button>
+            <div id="navFloat" class="bg-slate-800 p-5 rounded-[2rem] border border-slate-700 shadow-2xl flex items-center gap-4 cursor-pointer hover:scale-105 transition-all transform hover:-rotate-2" onclick="window.toggleView()">
+                <div class="relative">
+                    <i id="navIcon" data-lucide="trash-2" class="w-7 h-7 transition-all duration-300"></i>
+                    <span id="trashCount" class="absolute -top-2 -right-2 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black text-white shadow-md">0</span>
+                </div>
+                <span id="navLabel" class="text-xs font-black uppercase tracking-widest min-w-[80px] text-center text-slate-300"></span>
+            </div>
+        </div>
+    </main>
+
+    <div id="noteModal" class="fixed inset-0 z-[4000] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-[3rem] p-10 shadow-2xl">
+            <h2 id="modalTitle" class="text-2xl font-bold mb-6"></h2>
+            <div id="colorPicker" class="flex gap-3 mb-6 justify-center bg-slate-800/50 p-3 rounded-2xl">
+                <div onclick="window.setNoteColor('rgba(30, 41, 59, 0.4)')" class="color-dot bg-slate-600 active" data-color="rgba(30, 41, 59, 0.4)"></div>
+                <div onclick="window.setNoteColor('rgba(127, 29, 29, 0.4)')" class="color-dot bg-red-900" data-color="rgba(127, 29, 29, 0.4)"></div>
+                <div onclick="window.setNoteColor('rgba(20, 83, 45, 0.4)')" class="color-dot bg-green-900" data-color="rgba(20, 83, 45, 0.4)"></div>
+                <div onclick="window.setNoteColor('rgba(30, 58, 138, 0.4)')" class="color-dot bg-blue-900" data-color="rgba(30, 58, 138, 0.4)"></div>
+                <div onclick="window.setNoteColor('rgba(88, 28, 135, 0.4)')" class="color-dot bg-purple-900" data-color="rgba(88, 28, 135, 0.4)"></div>
+                <div onclick="window.setNoteColor('rgba(120, 53, 15, 0.4)')" class="color-dot bg-orange-900" data-color="rgba(120, 53, 15, 0.4)"></div>
+            </div>
+            <input id="nTitle" type="text" placeholder="Nhập tiêu đề..." class="w-full bg-slate-800 rounded-2xl p-4 mb-4 outline-none border border-transparent focus:border-blue-500 text-white font-bold text-lg">
+            <select id="nTag" class="w-full bg-slate-800 rounded-2xl p-4 mb-4 outline-none cursor-pointer font-semibold text-slate-300"></select>
+            <textarea id="nContent" rows="6" placeholder="Nội dung ghi chú..." class="w-full bg-slate-800 rounded-2xl p-4 mb-8 outline-none resize-none text-slate-300"></textarea>
+            <div class="flex gap-4">
+                <button onclick="window.saveNote()" class="flex-1 bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-bold transition-all shadow-lg">LƯU LÊN CLOUD</button>
+                <button onclick="window.closeModal()" class="px-8 bg-slate-800 py-4 rounded-2xl font-bold hover:bg-slate-700">HỦY BỎ</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="catModal" class="fixed inset-0 z-[4001] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl">
+            <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="layers" class="text-purple-500"></i> Quản lý danh mục</h2>
+            <div class="flex gap-2 mb-6"><input id="newCatInp" type="text" placeholder="Tên danh mục..." class="flex-1 bg-slate-800 rounded-xl px-4 outline-none border border-transparent focus:border-purple-500 font-semibold"><button onclick="window.addCat()" class="bg-purple-600 px-6 rounded-xl font-bold hover:bg-purple-500">+</button></div>
+            <div id="catListDisplay" class="space-y-2 max-h-60 overflow-y-auto mb-6 pr-2"></div>
+            <button onclick="document.getElementById('catModal').classList.add('hidden')" class="w-full bg-slate-800 py-4 rounded-xl font-bold">XONG</button>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================
+        // CẤU HÌNH SUPABASE ĐÃ ĐƯỢC TÍCH HỢP
+        // ==========================================
+        const SUPABASE_URL = 'https://caxvdrchiwhdpmdzmqez.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_OFbMdtfUv1WOnRb757l0zw_adbBgNH5';
+        
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // STATE APP
+        let currentKey = "";
+        let currentUserData = { notes: [], trash: [], cats: ["Tất cả", "Học tập", "Công việc"] };
+        let isTrashView = false;
+        let currentFilter = "Tất cả";
+        let selectedId = null;
+        let selectedColor = 'rgba(30, 41, 59, 0.4)';
+
+        // ==========================================
+        // HÀM ĐỒNG BỘ LÊN CLOUD SUPABASE
+        // ==========================================
+        async function syncToCloud() {
+            try {
+                document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse";
+                
+                const { error } = await supabaseClient.from('note_spaces').upsert({
+                    access_key: currentKey,
+                    payload: currentUserData
+                });
+
+                if (error) throw error;
+
+                document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]";
+            } catch (error) {
+                console.error("Lỗi đồng bộ:", error);
+                document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-red-500";
+            }
+        }
+
+        window.unlockApp = async function() {
+            const key = document.getElementById('accessKey').value.trim();
+            if(!key) return;
+            
+            const btn = document.getElementById('unlockBtn');
+            btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin"></i> ĐANG TẢI...`;
+            lucide.createIcons();
+            
+            currentKey = key;
+
+            try {
+                // Lấy dữ liệu từ bảng 'note_spaces'
+                const { data, error } = await supabaseClient
+                    .from('note_spaces')
+                    .select('payload')
+                    .eq('access_key', currentKey)
+                    .single();
+
+                if (error && error.code !== 'PGRST116') { // PGRST116 là lỗi không tìm thấy dòng, có thể bỏ qua khi tạo mới
+                    console.error("Lỗi lấy dữ liệu:", error);
+                    alert("Lỗi kết nối tới cơ sở dữ liệu. Vui lòng kiểm tra lại cấu hình Supabase.");
+                }
+
+                if (data && data.payload) {
+                    currentUserData = data.payload;
+                } else {
+                    // Tạo không gian làm việc mới nếu mã này chưa tồn tại trên Cloud
+                    currentUserData = { notes: [], trash: [], cats: ["Tất cả", "Học tập", "Công việc"] };
+                    await syncToCloud();
+                }
+
+                document.getElementById('lockScreen').classList.add('opacity-0', 'invisible');
+                document.getElementById('mainApp').classList.remove('blur-screen');
+                document.getElementById('keyLabel').innerText = `Không gian: ${currentKey}`;
+            } catch (err) {
+                console.error("Ngoại lệ xảy ra:", err);
+            }
+            
+            btn.innerHTML = `<span>KẾT NỐI DATABASE</span>`;
+            render();
+        }
+
+        window.lockAgain = function() { location.reload(); }
+
+        // ==========================================
+        // RENDER GIAO DIỆN
+        // ==========================================
+        window.render = function() {
+            const grid = document.getElementById('notesGrid');
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const body = document.getElementById('appBody');
+            const headerTitle = document.getElementById('headerTitle');
+            
+            if(isTrashView) {
+                body.className = "trash-mode"; body.style.backgroundColor = "#1a0505";
+                headerTitle.innerText = "THÙNG RÁC"; headerTitle.className = "text-6xl font-black tracking-tighter italic uppercase leading-tight bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent";
+                document.getElementById('navLabel').innerText = "Về Trang Chủ";
+                document.getElementById('navIcon').setAttribute('data-lucide', 'layout-dashboard');
+                document.getElementById('navIcon').className = "text-blue-500 w-7 h-7";
+                document.getElementById('trashCount').className = "absolute -top-2 -right-2 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black bg-blue-600 text-white shadow-md";
+                document.getElementById('clearTrashBtn').style.display = currentUserData.trash.length > 0 ? 'block' : 'none';
+            } else {
+                body.className = ""; body.style.backgroundColor = "#020617";
+                headerTitle.innerText = "BẢNG GHI CHÚ"; headerTitle.className = "text-6xl font-black tracking-tighter italic uppercase leading-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent";
+                document.getElementById('navLabel').innerText = "Xem Thùng Rác";
+                document.getElementById('navIcon').setAttribute('data-lucide', 'trash-2');
+                document.getElementById('navIcon').className = "text-red-500 w-7 h-7";
+                document.getElementById('trashCount').className = "absolute -top-2 -right-2 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black bg-red-600 text-white shadow-md";
+                document.getElementById('clearTrashBtn').style.display = 'none';
+            }
+            
+            document.getElementById('trashCount').innerText = currentUserData.trash.length;
+            lucide.createIcons();
+
+            const filterBar = document.getElementById('filterBar');
+            filterBar.innerHTML = '';
+            currentUserData.cats.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = `px-6 py-2.5 rounded-full text-sm font-bold border transition-all whitespace-nowrap ${currentFilter === c ? 'tag-active border-transparent shadow-lg' : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:border-slate-500'}`;
+                btn.innerText = c;
+                btn.onclick = () => { currentFilter = c; isTrashView = false; render(); };
+                filterBar.appendChild(btn);
+            });
+
+            const nTag = document.getElementById('nTag');
+            nTag.innerHTML = currentUserData.cats.filter(c => c !== "Tất cả").map(c => `<option value="${c}">${c}</option>`).join('');
+
+            grid.innerHTML = '';
+            let dataSource = isTrashView ? currentUserData.trash : currentUserData.notes;
+            const filtered = dataSource.filter(n => 
+                (currentFilter === "Tất cả" || n.tag === currentFilter) &&
+                (n.title.toLowerCase().includes(search) || n.content.toLowerCase().includes(search))
+            ).sort((a,b) => b.id - a.id);
+
+            if(filtered.length === 0) {
+                grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-slate-800 text-slate-500'} rounded-[3rem] p-20 text-center font-bold text-lg mt-10">Không có dữ liệu...</div>`;
+            }
+
+            filtered.forEach(n => {
+                const div = document.createElement('div');
+                div.className = `bento-card p-7 rounded-[2.5rem] border-l-4 border-t border-r border-b`;
+                div.style.background = isTrashView ? "" : (n.color || 'rgba(30, 41, 59, 0.4)');
+                div.style.borderLeftColor = isTrashView ? '#ef4444' : 'transparent';
+                div.innerHTML = `
+                    <div class="flex justify-between items-start mb-5">
+                        <span class="text-[9px] font-black uppercase tracking-widest bg-black/40 text-white px-3 py-1.5 rounded-xl shadow-inner">${n.tag}</span>
+                        ${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/30 hover:text-green-400 hover:scale-110 transition-all bg-black/20 p-1 rounded-full"><i data-lucide="check" class="w-5 h-5"></i></button>` : ''}
+                    </div>
+                    <h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-md">${n.title || 'Ghi chú trống'}</h3>
+                    <p class="text-slate-200/90 text-sm line-clamp-6 leading-relaxed font-medium">${n.content || 'Không có nội dung...'}</p>
+                `;
+                div.oncontextmenu = (e) => { e.preventDefault(); selectedId = n.id; showMenu(isTrashView ? 'trashActions' : 'noteActions', e); };
+                div.ondblclick = () => { if(!isTrashView) { selectedId = n.id; window.openEditModal(); } };
+                grid.appendChild(div);
+            });
+            lucide.createIcons();
+        }
+
+        window.toggleView = function() { isTrashView = !isTrashView; document.getElementById('searchInput').value = ""; render(); }
+
+        window.saveNote = function() {
+            const title = document.getElementById('nTitle').value.trim();
+            const content = document.getElementById('nContent').value.trim();
+            const tag = document.getElementById('nTag').value;
+            if(!title && !content) return;
+            if(selectedId) {
+                const n = currentUserData.notes.find(x => x.id === selectedId);
+                if(n) Object.assign(n, { title, content, tag, color: selectedColor });
+            } else {
+                currentUserData.notes.push({ id: Date.now(), title, content, tag, color: selectedColor });
+            }
+            window.closeModal(); render(); syncToCloud();
+        }
+
+        window.fastComplete = function(id) {
+            const idx = currentUserData.notes.findIndex(n => n.id === id);
+            if(idx > -1) {
+                const item = currentUserData.notes.splice(idx, 1)[0];
+                currentUserData.trash.unshift(item);
+                if(currentUserData.trash.length > 100) currentUserData.trash.pop();
+                render(); syncToCloud();
+            }
+        }
+
+        window.completeNote = function() { window.fastComplete(selectedId); hideMenus(); }
+        window.restoreNote = function() { const idx = currentUserData.trash.findIndex(n => n.id === selectedId); if(idx > -1) { currentUserData.notes.unshift(currentUserData.trash.splice(idx, 1)[0]); render(); hideMenus(); syncToCloud(); } }
+        window.permanentlyDelete = function() { if(confirm("XÓA VĨNH VIỄN?")) { currentUserData.trash = currentUserData.trash.filter(n => n.id !== selectedId); render(); hideMenus(); syncToCloud(); } }
+        window.clearFullTrash = function() { if(confirm("Dọn sạch 100 mục rác?")) { currentUserData.trash = []; render(); syncToCloud(); } }
+
+        window.setNoteColor = function(color) { selectedColor = color; document.querySelectorAll('.color-dot').forEach(dot => dot.classList.toggle('active', dot.dataset.color === color)); }
+
+        window.openEditModal = function() {
+            const n = currentUserData.notes.find(x => x.id === selectedId);
+            if(!n) return;
+            document.getElementById('modalTitle').innerText = "Chỉnh sửa tài liệu";
+            document.getElementById('nTitle').value = n.title;
+            document.getElementById('nContent').value = n.content;
+            document.getElementById('nTag').value = n.tag;
+            window.setNoteColor(n.color || 'rgba(30, 41, 59, 0.4)');
+            document.getElementById('noteModal').classList.remove('hidden'); hideMenus();
+        }
+
+        window.openAddModal = function() {
+            selectedId = null; document.getElementById('modalTitle').innerText = "Tạo mới tài liệu";
+            document.getElementById('nTitle').value = ''; document.getElementById('nContent').value = '';
+            window.setNoteColor('rgba(30, 41, 59, 0.4)');
+            document.getElementById('noteModal').classList.remove('hidden');
+        }
+
+        window.openCatManager = function() {
+            document.getElementById('catModal').classList.remove('hidden');
+            document.getElementById('catListDisplay').innerHTML = currentUserData.cats.filter(c => c !== "Tất cả").map(c => `<div class="flex justify-between items-center bg-slate-800 border border-slate-700 p-4 rounded-xl mb-3"><span class="font-bold text-sm text-slate-200">${c}</span><button onclick="window.deleteCat('${c}')" class="text-red-500 hover:bg-red-500/20 p-2 rounded-lg transition-all"><i data-lucide="trash" class="w-4 h-4"></i></button></div>`).join('');
+            lucide.createIcons(); hideMenus();
+        }
+
+        window.addCat = function() { const v = document.getElementById('newCatInp').value.trim(); if(v && !currentUserData.cats.includes(v)) { currentUserData.cats.push(v); document.getElementById('newCatInp').value = ''; window.openCatManager(); render(); syncToCloud(); } }
+        window.deleteCat = function(c) { currentUserData.cats = currentUserData.cats.filter(i => i !== c); currentUserData.notes.forEach(n => { if(n.tag === c) n.tag = "Tất cả"; }); window.openCatManager(); render(); syncToCloud(); }
+
+        window.closeModal = function() { document.getElementById('noteModal').classList.add('hidden'); }
+        
+        function showMenu(m, e) {
+            hideMenus();
+            document.getElementById('ctxMenu').style.display = 'block'; document.getElementById('ctxMenu').style.left = e.clientX + 'px'; document.getElementById('ctxMenu').style.top = e.clientY + 'px';
+            document.getElementById('noteActions').style.display = m==='noteActions'?'block':'none';
+            document.getElementById('trashActions').style.display = m==='trashActions'?'block':'none';
+            document.getElementById('globalActions').style.display = m==='globalActions'?'block':'none';
+        }
+        function hideMenus() { document.getElementById('ctxMenu').style.display = 'none'; }
+        
+        window.handleContextMenu = function(e) { e.preventDefault(); if(!e.target.closest('.bento-card')) showMenu('globalActions', e); }
+        window.hideMenus = hideMenus;
+
+        document.getElementById('accessKey').addEventListener('keypress', (e) => { if(e.key === 'Enter') window.unlockApp(); });
+        document.addEventListener('keydown', (e) => { if(e.ctrlKey && e.key === 'Enter' && !document.getElementById('noteModal').classList.contains('hidden')) window.saveNote(); });
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
