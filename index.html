@@ -2,44 +2,53 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Note OS Pro - Supabase Cloud Connected</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Note OS Pro - Voice & Mobile Ready</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; min-height: 100vh; overflow-x: hidden; transition: background-color 0.6s; }
+        /* Tùy chỉnh CSS cơ bản */
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #020617; color: #f8fafc; min-height: 100vh; overflow-x: hidden; transition: background-color 0.6s; -webkit-tap-highlight-color: transparent; }
         .bento-card { backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.05); transition: 0.3s; cursor: context-menu; }
-        .bento-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); }
+        @media (hover: hover) { .bento-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5); } }
+        
+        /* Giao diện thùng rác */
         body.trash-mode .bento-card { border-color: rgba(239, 68, 68, 0.2); background: rgba(69, 10, 10, 0.4) !important; }
-        body.trash-mode .bento-card:hover { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 15px 30px rgba(239, 68, 68, 0.15); }
+        @media (hover: hover) { body.trash-mode .bento-card:hover { border-color: rgba(239, 68, 68, 0.6); box-shadow: 0 15px 30px rgba(239, 68, 68, 0.15); } }
+
         .context-menu { display: none; position: fixed; z-index: 1000; width: 220px; background: #1e293b; border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; padding: 6px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
-        .menu-item { padding: 10px 12px; display: flex; align-items: center; gap: 10px; font-size: 13px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-        .menu-item:hover { background: #3b82f6; color: white; }
+        .menu-item { padding: 12px; display: flex; align-items: center; gap: 10px; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
+        @media (hover: hover) { .menu-item:hover { background: #3b82f6; color: white; } }
+        
         .blur-screen { filter: blur(30px) brightness(0.5); pointer-events: none; }
         .tag-active { background: #3b82f6 !important; border-color: #60a5fa !important; color: white !important; }
         body.trash-mode .tag-active { background: #ef4444 !important; border-color: #f87171 !important; }
-        .color-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; position: relative; }
+        .color-dot { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: 0.2s; position: relative; flex-shrink: 0; }
         .color-dot.active::after { content: '✓'; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; color: white; }
-        ::-webkit-scrollbar { width: 6px; }
+        
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 10px; }
         body.trash-mode ::-webkit-scrollbar-thumb { background: #450a0a; }
         #lockScreen { background: radial-gradient(circle at center, #1e293b 0%, #020617 100%); }
+
+        /* Ẩn nút mic nếu trình duyệt không hỗ trợ */
+        .no-speech-api #micWrapper { display: none; }
     </style>
 </head>
 <body id="appBody" oncontextmenu="handleContextMenu(event)" onclick="hideMenus()">
 
-    <div id="lockScreen" class="fixed inset-0 z-[5000] flex items-center justify-center transition-all duration-700">
-        <div class="max-w-md w-full p-10 text-center bg-slate-900/50 backdrop-blur-2xl border border-slate-700 rounded-[3rem] shadow-[0_0_100px_rgba(59,130,246,0.15)] transform transition-transform duration-500 hover:scale-105">
+    <div id="lockScreen" class="fixed inset-0 z-[5000] flex items-center justify-center transition-all duration-700 p-4">
+        <div class="max-w-md w-full p-8 md:p-10 text-center bg-slate-900/50 backdrop-blur-2xl border border-slate-700 rounded-[2.5rem] md:rounded-[3rem] shadow-[0_0_100px_rgba(59,130,246,0.15)] transform transition-transform duration-500 hover:scale-105">
             <div class="mb-8 flex justify-center relative">
                 <div class="absolute inset-0 bg-blue-500 blur-2xl opacity-20 rounded-full animate-pulse"></div>
                 <div class="p-5 bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-full relative z-10"><i data-lucide="cloud" class="w-14 h-14 text-blue-400"></i></div>
             </div>
-            <h2 class="text-3xl font-black mb-2 uppercase tracking-widest text-white drop-shadow-lg">CLOUD SYNC</h2>
+            <h2 class="text-2xl md:text-3xl font-black mb-2 uppercase tracking-widest text-white drop-shadow-lg">CLOUD SYNC</h2>
             <p class="text-slate-400 text-sm mb-8">Nhập mã khóa để kết nối Dữ liệu</p>
-            <input type="password" id="accessKey" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-2xl py-4 px-6 mb-6 text-center outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 font-bold tracking-[0.5em] text-white transition-all">
-            <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2">
+            <input type="password" id="accessKey" placeholder="••••••••" class="w-full bg-slate-950 border border-slate-700 rounded-2xl py-4 px-6 mb-6 text-center outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50 font-bold tracking-[0.5em] text-white transition-all text-lg">
+            <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2 text-lg">
                 <span>KẾT NỐI DATABASE</span>
             </button>
         </div>
@@ -62,45 +71,45 @@
         </div>
     </div>
 
-    <main id="mainApp" class="blur-screen max-w-7xl mx-auto px-6 py-12 transition-all duration-700">
-        <header class="flex flex-col lg:flex-row justify-between items-end mb-12 gap-6">
+    <main id="mainApp" class="blur-screen max-w-7xl mx-auto px-4 md:px-6 py-8 md:py-12 transition-all duration-700 pb-32">
+        <header class="flex flex-col lg:flex-row justify-between items-start lg:items-end mb-10 gap-6">
             <div>
-                <h1 id="headerTitle" class="text-6xl font-black tracking-tighter italic uppercase leading-tight"></h1>
+                <h1 id="headerTitle" class="text-4xl lg:text-6xl font-black tracking-tighter italic uppercase leading-tight break-words"></h1>
                 <p class="text-slate-400 font-semibold mt-3 flex items-center gap-2 tracking-widest text-xs uppercase">
                     <span id="statusDot" class="w-2.5 h-2.5 rounded-full animate-pulse"></span>
                     <span id="keyLabel">Đang đồng bộ</span>
                 </p>
             </div>
-            <div class="flex gap-4 w-full md:w-auto items-center">
-                <div class="relative flex-1 md:w-80">
+            <div class="flex gap-3 w-full lg:w-auto items-center">
+                <div class="relative flex-1 lg:w-80">
                     <i data-lucide="search" class="absolute left-4 top-3.5 w-5 h-5 text-slate-500"></i>
-                    <input type="text" id="searchInput" oninput="render()" placeholder="Tìm kiếm tài liệu..." class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-3 pl-12 pr-4 outline-none focus:border-blue-500 transition-all shadow-inner text-white font-medium">
+                    <input type="text" id="searchInput" oninput="render()" placeholder="Tìm kiếm..." class="w-full bg-slate-900 border border-slate-700 rounded-2xl py-3 pl-12 pr-4 outline-none focus:border-blue-500 transition-all shadow-inner text-white font-medium text-base">
                 </div>
-                <button onclick="lockAgain()" class="bg-slate-800 p-3.5 rounded-2xl border border-slate-700 hover:bg-red-500/20 hover:text-red-500 hover:border-red-500 transition-all shadow-lg active:scale-90" title="Đóng kết nối">
+                <button onclick="lockAgain()" class="bg-slate-800 p-3.5 rounded-2xl border border-slate-700 hover:bg-red-500/20 hover:text-red-500 hover:border-red-500 transition-all shadow-lg active:scale-90 flex-shrink-0" title="Đóng kết nối">
                     <i data-lucide="power" class="w-6 h-6"></i>
                 </button>
             </div>
         </header>
 
-        <div id="filterBar" class="flex gap-3 mb-10 overflow-x-auto pb-4 scroll-smooth"></div>
-        <div id="notesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"></div>
+        <div id="filterBar" class="flex gap-3 mb-8 overflow-x-auto pb-4 scroll-smooth -mx-4 px-4 md:mx-0 md:px-0"></div>
+        <div id="notesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"></div>
 
-        <div class="fixed bottom-10 right-10 flex flex-col gap-4 items-end z-40">
-            <button id="clearTrashBtn" style="display:none" onclick="window.clearFullTrash()" class="bg-red-600/90 backdrop-blur-md text-white border border-red-400 px-6 py-3 rounded-2xl text-xs font-black hover:bg-red-500 transition-all shadow-[0_0_30px_rgba(239,68,68,0.4)] active:scale-95 tracking-widest">DỌN SẠCH 100 MỤC RÁC</button>
-            <div id="navFloat" class="bg-slate-800 p-5 rounded-[2rem] border border-slate-700 shadow-2xl flex items-center gap-4 cursor-pointer hover:scale-105 transition-all transform hover:-rotate-2" onclick="window.toggleView()">
+        <div class="fixed bottom-6 right-6 md:bottom-10 md:right-10 flex flex-col gap-4 items-end z-40">
+            <button id="clearTrashBtn" style="display:none" onclick="window.clearFullTrash()" class="bg-red-600/90 backdrop-blur-md text-white border border-red-400 px-6 py-3 rounded-2xl text-xs font-black hover:bg-red-500 transition-all shadow-[0_0_30px_rgba(239,68,68,0.4)] active:scale-95 tracking-widest">DỌN SẠCH RÁC</button>
+            <div id="navFloat" class="bg-slate-800 p-4 md:p-5 rounded-[2rem] border border-slate-700 shadow-2xl flex items-center gap-3 md:gap-4 cursor-pointer transition-all transform md:hover:scale-105 md:hover:-rotate-2 active:scale-95" onclick="window.toggleView()">
                 <div class="relative">
-                    <i id="navIcon" data-lucide="trash-2" class="w-7 h-7 transition-all duration-300"></i>
+                    <i id="navIcon" data-lucide="trash-2" class="w-6 h-6 md:w-7 md:h-7 transition-all duration-300"></i>
                     <span id="trashCount" class="absolute -top-2 -right-2 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black text-white shadow-md">0</span>
                 </div>
-                <span id="navLabel" class="text-xs font-black uppercase tracking-widest min-w-[80px] text-center text-slate-300"></span>
+                <span id="navLabel" class="text-xs font-black uppercase tracking-widest min-w-[70px] md:min-w-[80px] text-center text-slate-300 hidden md:block"></span>
             </div>
         </div>
     </main>
 
-    <div id="noteModal" class="fixed inset-0 z-[4000] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-[3rem] p-10 shadow-2xl">
-            <h2 id="modalTitle" class="text-2xl font-bold mb-6"></h2>
-            <div id="colorPicker" class="flex gap-3 mb-6 justify-center bg-slate-800/50 p-3 rounded-2xl">
+    <div id="noteModal" class="fixed inset-0 z-[4000] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-lg rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 shadow-2xl my-auto relative">
+            <h2 id="modalTitle" class="text-xl md:text-2xl font-bold mb-6"></h2>
+            <div id="colorPicker" class="flex gap-3 mb-6 justify-center bg-slate-800/50 p-3 rounded-2xl flex-wrap">
                 <div onclick="window.setNoteColor('rgba(30, 41, 59, 0.4)')" class="color-dot bg-slate-600 active" data-color="rgba(30, 41, 59, 0.4)"></div>
                 <div onclick="window.setNoteColor('rgba(127, 29, 29, 0.4)')" class="color-dot bg-red-900" data-color="rgba(127, 29, 29, 0.4)"></div>
                 <div onclick="window.setNoteColor('rgba(20, 83, 45, 0.4)')" class="color-dot bg-green-900" data-color="rgba(20, 83, 45, 0.4)"></div>
@@ -109,21 +118,30 @@
                 <div onclick="window.setNoteColor('rgba(120, 53, 15, 0.4)')" class="color-dot bg-orange-900" data-color="rgba(120, 53, 15, 0.4)"></div>
             </div>
             <input id="nTitle" type="text" placeholder="Nhập tiêu đề..." class="w-full bg-slate-800 rounded-2xl p-4 mb-4 outline-none border border-transparent focus:border-blue-500 text-white font-bold text-lg">
-            <select id="nTag" class="w-full bg-slate-800 rounded-2xl p-4 mb-4 outline-none cursor-pointer font-semibold text-slate-300"></select>
-            <textarea id="nContent" rows="6" placeholder="Nội dung ghi chú..." class="w-full bg-slate-800 rounded-2xl p-4 mb-8 outline-none resize-none text-slate-300"></textarea>
-            <div class="flex gap-4">
-                <button onclick="window.saveNote()" class="flex-1 bg-blue-600 hover:bg-blue-500 py-4 rounded-2xl font-bold transition-all shadow-lg">LƯU LÊN CLOUD</button>
-                <button onclick="window.closeModal()" class="px-8 bg-slate-800 py-4 rounded-2xl font-bold hover:bg-slate-700">HỦY BỎ</button>
+            <select id="nTag" class="w-full bg-slate-800 rounded-2xl p-4 mb-4 outline-none cursor-pointer font-semibold text-slate-300 text-base"></select>
+            
+            <div class="relative w-full mb-8">
+                <textarea id="nContent" rows="8" placeholder="Nội dung ghi chú (Bấm mic để nói)..." class="w-full bg-slate-800 rounded-2xl p-4 pr-14 outline-none resize-none text-slate-300 text-base leading-relaxed"></textarea>
+                <div id="micWrapper" class="absolute bottom-3 right-3">
+                    <button id="micBtn" onclick="window.toggleVoiceType()" class="p-3 bg-slate-700/80 hover:bg-blue-500/20 text-slate-400 hover:text-blue-400 rounded-2xl transition-all active:scale-90 shadow-sm backdrop-blur-sm" title="Nhập bằng giọng nói">
+                        <i data-lucide="mic" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="flex gap-4 flex-col md:flex-row">
+                <button onclick="window.saveNote()" class="w-full py-4 rounded-2xl font-bold transition-all shadow-lg bg-blue-600 hover:bg-blue-500 text-white text-lg active:scale-95">LƯU LẠI</button>
+                <button onclick="window.closeModal()" class="w-full py-4 rounded-2xl font-bold hover:bg-slate-700 bg-slate-800 text-slate-300 text-lg">HỦY BỎ</button>
             </div>
         </div>
     </div>
 
     <div id="catModal" class="fixed inset-0 z-[4001] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-[2.5rem] p-8 shadow-2xl">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-md rounded-[2.5rem] p-6 md:p-8 shadow-2xl mx-4">
             <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="layers" class="text-purple-500"></i> Quản lý danh mục</h2>
-            <div class="flex gap-2 mb-6"><input id="newCatInp" type="text" placeholder="Tên danh mục..." class="flex-1 bg-slate-800 rounded-xl px-4 outline-none border border-transparent focus:border-purple-500 font-semibold"><button onclick="window.addCat()" class="bg-purple-600 px-6 rounded-xl font-bold hover:bg-purple-500">+</button></div>
+            <div class="flex gap-2 mb-6"><input id="newCatInp" type="text" placeholder="Tên danh mục..." class="flex-1 bg-slate-800 rounded-xl px-4 py-3 outline-none border border-transparent focus:border-purple-500 font-semibold text-base"><button onclick="window.addCat()" class="bg-purple-600 px-4 md:px-6 rounded-xl font-bold hover:bg-purple-500 text-white">+</button></div>
             <div id="catListDisplay" class="space-y-2 max-h-60 overflow-y-auto mb-6 pr-2"></div>
-            <button onclick="document.getElementById('catModal').classList.add('hidden')" class="w-full bg-slate-800 py-4 rounded-xl font-bold">XONG</button>
+            <button onclick="document.getElementById('catModal').classList.add('hidden')" class="w-full bg-slate-800 py-4 rounded-xl font-bold text-lg">XONG</button>
         </div>
     </div>
 
@@ -143,6 +161,68 @@
         let currentFilter = "Tất cả";
         let selectedId = null;
         let selectedColor = 'rgba(30, 41, 59, 0.4)';
+        
+        // VOICE TYPING STATE
+        let recognition;
+        let isListening = false;
+
+        // ==========================================
+        // KHỞI TẠO VOICE TYPING
+        // ==========================================
+        function initSpeechRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.lang = 'vi-VN'; // Thiết lập tiếng Việt
+                recognition.continuous = false; 
+                recognition.interimResults = false;
+
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    const contentArea = document.getElementById('nContent');
+                    // Thêm dấu cách nếu đã có nội dung
+                    contentArea.value += (contentArea.value ? ' ' : '') + transcript;
+                    stopListening();
+                };
+
+                recognition.onerror = (event) => {
+                    console.error("Lỗi giọng nói:", event.error);
+                    stopListening();
+                    if(event.error === 'not-allowed') alert("Vui lòng cấp quyền truy cập Micro để sử dụng tính năng này.");
+                };
+                
+                recognition.onend = () => stopListening();
+
+            } else {
+                // Nếu trình duyệt không hỗ trợ
+                document.body.classList.add('no-speech-api');
+            }
+        }
+
+        window.toggleVoiceType = function() {
+            if (!recognition) { alert("Trình duyệt này không hỗ trợ nhập liệu bằng giọng nói."); return; }
+            isListening ? stopListening() : startListening();
+        }
+
+        function startListening() {
+            try {
+                recognition.start();
+                isListening = true;
+                const micBtn = document.getElementById('micBtn');
+                micBtn.classList.add('!bg-red-500/20', '!text-red-500', 'animate-pulse', 'ring-2', 'ring-red-500/50');
+            } catch(e) { console.error(e); stopListening(); }
+        }
+
+        function stopListening() {
+            if (recognition && isListening) recognition.stop();
+            isListening = false;
+            const micBtn = document.getElementById('micBtn');
+            micBtn.classList.remove('!bg-red-500/20', '!text-red-500', 'animate-pulse', 'ring-2', 'ring-red-500/50');
+        }
+
+        // Khởi tạo ngay khi load
+        initSpeechRecognition();
+
 
         // ==========================================
         // HÀM ĐỒNG BỘ LÊN CLOUD SUPABASE
@@ -150,14 +230,8 @@
         async function syncToCloud() {
             try {
                 document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-yellow-400 animate-pulse";
-                
-                const { error } = await supabaseClient.from('note_spaces').upsert({
-                    access_key: currentKey,
-                    payload: currentUserData
-                });
-
+                const { error } = await supabaseClient.from('note_spaces').upsert({ access_key: currentKey, payload: currentUserData });
                 if (error) throw error;
-
                 document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-green-500 shadow-[0_0_10px_#22c55e]";
             } catch (error) {
                 console.error("Lỗi đồng bộ:", error);
@@ -170,39 +244,17 @@
             if(!key) return;
             
             const btn = document.getElementById('unlockBtn');
-            btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin"></i> ĐANG TẢI...`;
+            btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-6 h-6"></i> ĐANG TẢI...`;
             lucide.createIcons();
-            
             currentKey = key;
 
             try {
-                // Lấy dữ liệu từ bảng 'note_spaces'
-                const { data, error } = await supabaseClient
-                    .from('note_spaces')
-                    .select('payload')
-                    .eq('access_key', currentKey)
-                    .single();
-
-                if (error && error.code !== 'PGRST116') { // PGRST116 là lỗi không tìm thấy dòng, có thể bỏ qua khi tạo mới
-                    console.error("Lỗi lấy dữ liệu:", error);
-                    alert("Lỗi kết nối tới cơ sở dữ liệu. Vui lòng kiểm tra lại cấu hình Supabase.");
-                }
-
-                if (data && data.payload) {
-                    currentUserData = data.payload;
-                } else {
-                    // Tạo không gian làm việc mới nếu mã này chưa tồn tại trên Cloud
-                    currentUserData = { notes: [], trash: [], cats: ["Tất cả", "Học tập", "Công việc"] };
-                    await syncToCloud();
-                }
-
+                const { data, error } = await supabaseClient.from('note_spaces').select('payload').eq('access_key', currentKey).single();
+                if (data && data.payload) { currentUserData = data.payload; } else { currentUserData = { notes: [], trash: [], cats: ["Tất cả", "Học tập", "Công việc"] }; await syncToCloud(); }
                 document.getElementById('lockScreen').classList.add('opacity-0', 'invisible');
                 document.getElementById('mainApp').classList.remove('blur-screen');
                 document.getElementById('keyLabel').innerText = `Không gian: ${currentKey}`;
-            } catch (err) {
-                console.error("Ngoại lệ xảy ra:", err);
-            }
-            
+            } catch (err) { console.error(err); }
             btn.innerHTML = `<span>KẾT NỐI DATABASE</span>`;
             render();
         }
@@ -220,18 +272,18 @@
             
             if(isTrashView) {
                 body.className = "trash-mode"; body.style.backgroundColor = "#1a0505";
-                headerTitle.innerText = "THÙNG RÁC"; headerTitle.className = "text-6xl font-black tracking-tighter italic uppercase leading-tight bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent";
+                headerTitle.innerText = "THÙNG RÁC"; headerTitle.className = "text-4xl lg:text-6xl font-black tracking-tighter italic uppercase leading-tight bg-gradient-to-r from-red-500 to-orange-500 bg-clip-text text-transparent break-words";
                 document.getElementById('navLabel').innerText = "Về Trang Chủ";
                 document.getElementById('navIcon').setAttribute('data-lucide', 'layout-dashboard');
-                document.getElementById('navIcon').className = "text-blue-500 w-7 h-7";
+                document.getElementById('navIcon').className = "text-blue-500 w-6 h-6 md:w-7 md:h-7";
                 document.getElementById('trashCount').className = "absolute -top-2 -right-2 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black bg-blue-600 text-white shadow-md";
                 document.getElementById('clearTrashBtn').style.display = currentUserData.trash.length > 0 ? 'block' : 'none';
             } else {
                 body.className = ""; body.style.backgroundColor = "#020617";
-                headerTitle.innerText = "BẢNG GHI CHÚ"; headerTitle.className = "text-6xl font-black tracking-tighter italic uppercase leading-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent";
-                document.getElementById('navLabel').innerText = "Xem Thùng Rác";
+                headerTitle.innerText = "NOTE ON"; headerTitle.className = "text-4xl lg:text-6xl font-black tracking-tighter italic uppercase leading-tight bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent break-words";
+                document.getElementById('navLabel').innerText = "Thùng Rác";
                 document.getElementById('navIcon').setAttribute('data-lucide', 'trash-2');
-                document.getElementById('navIcon').className = "text-red-500 w-7 h-7";
+                document.getElementById('navIcon').className = "text-red-500 w-6 h-6 md:w-7 md:h-7";
                 document.getElementById('trashCount').className = "absolute -top-2 -right-2 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black bg-red-600 text-white shadow-md";
                 document.getElementById('clearTrashBtn').style.display = 'none';
             }
@@ -243,7 +295,7 @@
             filterBar.innerHTML = '';
             currentUserData.cats.forEach(c => {
                 const btn = document.createElement('button');
-                btn.className = `px-6 py-2.5 rounded-full text-sm font-bold border transition-all whitespace-nowrap ${currentFilter === c ? 'tag-active border-transparent shadow-lg' : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:border-slate-500'}`;
+                btn.className = `px-5 md:px-6 py-2.5 rounded-full text-sm font-bold border transition-all whitespace-nowrap flex-shrink-0 ${currentFilter === c ? 'tag-active border-transparent shadow-lg' : 'bg-slate-900/80 border-slate-700 text-slate-400 hover:border-slate-500'}`;
                 btn.innerText = c;
                 btn.onclick = () => { currentFilter = c; isTrashView = false; render(); };
                 filterBar.appendChild(btn);
@@ -260,21 +312,21 @@
             ).sort((a,b) => b.id - a.id);
 
             if(filtered.length === 0) {
-                grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-slate-800 text-slate-500'} rounded-[3rem] p-20 text-center font-bold text-lg mt-10">Không có dữ liệu...</div>`;
+                grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-slate-800 text-slate-500'} rounded-[2rem] md:rounded-[3rem] p-10 md:p-20 text-center font-bold text-lg mt-6 md:mt-10">Không có dữ liệu...</div>`;
             }
 
             filtered.forEach(n => {
                 const div = document.createElement('div');
-                div.className = `bento-card p-7 rounded-[2.5rem] border-l-4 border-t border-r border-b`;
+                div.className = `bento-card p-5 md:p-7 rounded-[2rem] md:rounded-[2.5rem] border-l-4 border-t border-r border-b`;
                 div.style.background = isTrashView ? "" : (n.color || 'rgba(30, 41, 59, 0.4)');
                 div.style.borderLeftColor = isTrashView ? '#ef4444' : 'transparent';
                 div.innerHTML = `
-                    <div class="flex justify-between items-start mb-5">
+                    <div class="flex justify-between items-start mb-4 md:mb-5">
                         <span class="text-[9px] font-black uppercase tracking-widest bg-black/40 text-white px-3 py-1.5 rounded-xl shadow-inner">${n.tag}</span>
-                        ${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/30 hover:text-green-400 hover:scale-110 transition-all bg-black/20 p-1 rounded-full"><i data-lucide="check" class="w-5 h-5"></i></button>` : ''}
+                        ${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/30 hover:text-green-400 transition-all bg-black/20 p-1.5 rounded-full"><i data-lucide="check" class="w-5 h-5"></i></button>` : ''}
                     </div>
-                    <h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-md">${n.title || 'Ghi chú trống'}</h3>
-                    <p class="text-slate-200/90 text-sm line-clamp-6 leading-relaxed font-medium">${n.content || 'Không có nội dung...'}</p>
+                    <h3 class="font-extrabold text-lg md:text-xl mb-3 line-clamp-2 text-white drop-shadow-md break-words">${n.title || 'Ghi chú trống'}</h3>
+                    <p class="text-slate-200/90 text-sm md:text-base line-clamp-6 leading-relaxed font-medium break-words">${n.content || 'Không có nội dung...'}</p>
                 `;
                 div.oncontextmenu = (e) => { e.preventDefault(); selectedId = n.id; showMenu(isTrashView ? 'trashActions' : 'noteActions', e); };
                 div.ondblclick = () => { if(!isTrashView) { selectedId = n.id; window.openEditModal(); } };
@@ -317,17 +369,17 @@
         window.setNoteColor = function(color) { selectedColor = color; document.querySelectorAll('.color-dot').forEach(dot => dot.classList.toggle('active', dot.dataset.color === color)); }
 
         window.openEditModal = function() {
+            stopListening(); // Dừng mic nếu đang bật
             const n = currentUserData.notes.find(x => x.id === selectedId);
             if(!n) return;
             document.getElementById('modalTitle').innerText = "Chỉnh sửa tài liệu";
-            document.getElementById('nTitle').value = n.title;
-            document.getElementById('nContent').value = n.content;
-            document.getElementById('nTag').value = n.tag;
+            document.getElementById('nTitle').value = n.title; document.getElementById('nContent').value = n.content; document.getElementById('nTag').value = n.tag;
             window.setNoteColor(n.color || 'rgba(30, 41, 59, 0.4)');
             document.getElementById('noteModal').classList.remove('hidden'); hideMenus();
         }
 
         window.openAddModal = function() {
+            stopListening(); // Dừng mic nếu đang bật
             selectedId = null; document.getElementById('modalTitle').innerText = "Tạo mới tài liệu";
             document.getElementById('nTitle').value = ''; document.getElementById('nContent').value = '';
             window.setNoteColor('rgba(30, 41, 59, 0.4)');
@@ -343,7 +395,7 @@
         window.addCat = function() { const v = document.getElementById('newCatInp').value.trim(); if(v && !currentUserData.cats.includes(v)) { currentUserData.cats.push(v); document.getElementById('newCatInp').value = ''; window.openCatManager(); render(); syncToCloud(); } }
         window.deleteCat = function(c) { currentUserData.cats = currentUserData.cats.filter(i => i !== c); currentUserData.notes.forEach(n => { if(n.tag === c) n.tag = "Tất cả"; }); window.openCatManager(); render(); syncToCloud(); }
 
-        window.closeModal = function() { document.getElementById('noteModal').classList.add('hidden'); }
+        window.closeModal = function() { stopListening(); document.getElementById('noteModal').classList.add('hidden'); }
         
         function showMenu(m, e) {
             hideMenus();
