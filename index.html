@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Workspace Pro - Spatial UI & Auto Lock</title>
+    <title>Workspace Pro </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -100,7 +100,7 @@
                 <div class="p-6 bg-slate-900/80 border border-white/10 rounded-full relative z-10 shadow-xl"><i data-lucide="cloud" class="w-14 h-14 text-blue-400"></i></div>
             </div>
             <h2 class="text-3xl font-black mb-2 uppercase tracking-widest text-white drop-shadow-lg">WORKSPACE</h2>
-            <p class="text-slate-400 text-sm mb-8 font-medium"></p>
+            <p class="text-slate-400 text-sm mb-8 font-medium">Truy cập Dữ liệu Kép (Cloud)</p>
             <input type="password" id="accessKey" placeholder="••••••••" class="w-full bg-slate-950/80 border border-white/10 rounded-2xl py-4 px-6 mb-6 text-center outline-none focus:border-blue-500 font-bold tracking-[0.5em] text-white transition-all text-lg shadow-inner">
             <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2 text-lg">
                 <span>ĐĂNG NHẬP!</span>
@@ -160,7 +160,7 @@
 
             <div id="noteAddBtnContainer" class="fixed bottom-8 left-0 right-0 flex justify-center z-40 pointer-events-none transition-all duration-300">
                 <button onclick="window.openNoteAddModal()" class="pointer-events-auto bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 px-8 rounded-full shadow-[0_10px_40px_rgba(59,130,246,0.4)] hover:shadow-[0_10px_50px_rgba(59,130,246,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 font-black tracking-wide text-base border border-blue-400/30">
-                    <i data-lucide="plus" class="w-6 h-6"></i> 
+                    <i data-lucide="plus" class="w-6 h-6"></i> THÊM GHI CHÚ
                 </button>
             </div>
 
@@ -236,7 +236,7 @@
 
             <div class="fixed bottom-8 left-0 right-0 flex justify-center z-40 pointer-events-none">
                 <button onclick="openFinAddModal()" class="pointer-events-auto bg-gradient-to-r from-emerald-500 to-cyan-500 text-white p-4 px-8 rounded-full shadow-[0_10px_40px_rgba(16,185,129,0.4)] hover:shadow-[0_10px_50px_rgba(16,185,129,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 font-black tracking-wide text-base border border-emerald-400/30">
-                    <i data-lucide="plus" class="w-6 h-6"></i> 
+                    <i data-lucide="plus" class="w-6 h-6"></i> THÊM GIAO DỊCH
                 </button>
             </div>
         </div>
@@ -479,19 +479,30 @@
                 const { data, error } = await supabaseClient.from('note_spaces').select('payload').eq('access_key', currentKey).single();
                 if (data && data.payload) { 
                     currentUserData = data.payload; 
-                    if(!currentUserData.noteCats && currentUserData.cats) { currentUserData.noteCats = currentUserData.cats; }
+                    
+                    // --- ĐOẠN CODE VÁ LỖI DỮ LIỆU ---
+                    if(!currentUserData.noteCats && currentUserData.cats) { 
+                        currentUserData.noteCats = currentUserData.cats; 
+                    }
                     if(!currentUserData.finance || Array.isArray(currentUserData.finance)) { 
                         let oldTransactions = Array.isArray(currentUserData.finance) ? currentUserData.finance : [];
-                        currentUserData.finance = { transactions: oldTransactions, members: ['Quỹ Chung', 'Thuận'], categories: defaultFinCats }; 
+                        currentUserData.finance = { 
+                            transactions: oldTransactions, 
+                            members: ['Quỹ Chung', 'Thuận'], 
+                            categories: defaultFinCats 
+                        }; 
                     }
                     if(!currentUserData.finance.transactions) currentUserData.finance.transactions = [];
                     if(!currentUserData.finance.members) currentUserData.finance.members = ['Quỹ Chung', 'Thuận'];
                     if(!currentUserData.finance.categories) currentUserData.finance.categories = defaultFinCats;
-                } else { await syncToCloud(); }
+                    
+                } else { 
+                    await syncToCloud(); 
+                }
                 
                 document.getElementById('lockScreen').classList.add('opacity-0', 'invisible');
                 document.getElementById('mainApp').classList.remove('blur-screen');
-                document.getElementById('keyLabel').innerText = `: ${}`;
+                document.getElementById('keyLabel').innerText = `K.Gian: ${currentKey}`;
                 
                 initVoiceAPI();
                 switchAppTab('notes');
@@ -517,7 +528,7 @@
                 tNotes.classList.remove('hidden-tab'); tFin.classList.add('hidden-tab');
                 btnN.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all bg-blue-500/90 text-white shadow-lg flex items-center justify-center gap-2";
                 btnF.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2 bg-transparent";
-                title.innerText = "NOTE ";
+                title.innerText = "NOTE OS";
                 body.classList.add('theme-notes');
                 if(isTrashView) body.classList.add('trash-mode');
                 renderNotes();
@@ -525,7 +536,7 @@
                 tNotes.classList.add('hidden-tab'); tFin.classList.remove('hidden-tab');
                 btnF.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all bg-emerald-500/90 text-white shadow-lg flex items-center justify-center gap-2";
                 btnN.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2 bg-transparent";
-                title.innerText = "QUỸ";
+                title.innerText = "FINANCE OS";
                 body.classList.add('theme-finance');
                 hideMenus(); 
                 renderFinanceDashboard();
@@ -813,5 +824,3 @@
     </script>
 </body>
 </html>
-
-
