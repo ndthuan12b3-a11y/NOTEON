@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Workspace Pro </title>
+    <title>Workspace Pro - Ultimate Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -17,27 +17,26 @@
         ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
         .blur-screen { filter: blur(30px) brightness(0.5); pointer-events: none; }
         
-        /* 1. KHÔNG GIAN ĐỘNG (SPATIAL BACKGROUND) */
+        /* KHÔNG GIAN ĐỘNG */
         .bg-mesh { position: fixed; inset: 0; z-index: -1; background-color: #020617; overflow: hidden; transition: background-color 0.8s ease; }
         .blob { position: absolute; filter: blur(100px); border-radius: 50%; opacity: 0.5; transition: background 1.5s ease-in-out; animation: float 15s infinite alternate ease-in-out; }
         .blob-1 { width: 50vw; height: 50vw; top: -10%; left: -10%; }
         .blob-2 { width: 40vw; height: 40vw; bottom: -10%; right: -10%; animation-delay: -5s; }
         
-        /* Màu không gian theo Theme */
-        body.theme-notes .blob-1 { background: #2563eb; } /* Blue */
-        body.theme-notes .blob-2 { background: #4f46e5; } /* Indigo */
-        body.theme-finance .blob-1 { background: #059669; } /* Emerald */
-        body.theme-finance .blob-2 { background: #0891b2; } /* Cyan */
+        body.theme-notes .blob-1 { background: #2563eb; }
+        body.theme-notes .blob-2 { background: #4f46e5; }
+        body.theme-finance .blob-1 { background: #059669; }
+        body.theme-finance .blob-2 { background: #0891b2; }
         body.trash-mode .bg-mesh { background-color: #1a0505; }
-        body.trash-mode .blob-1 { background: #dc2626; opacity: 0.3; } /* Red */
-        body.trash-mode .blob-2 { background: #ea580c; opacity: 0.3; } /* Orange */
+        body.trash-mode .blob-1 { background: #dc2626; opacity: 0.3; }
+        body.trash-mode .blob-2 { background: #ea580c; opacity: 0.3; }
 
         @keyframes float {
             0% { transform: translate(0, 0) scale(1); }
             100% { transform: translate(8%, 12%) scale(1.15); }
         }
 
-        /* 2. HIỆU ỨNG KÍNH MỜ CAO CẤP (PREMIUM GLASSMORPHISM) */
+        /* HIỆU ỨNG KÍNH MỜ */
         .glass-card, .bento-card { 
             background: rgba(15, 23, 42, 0.45); 
             backdrop-filter: blur(24px); 
@@ -51,23 +50,17 @@
         
         .bento-card { cursor: pointer; }
         @media (hover: hover) { 
-            .bento-card:hover { 
-                transform: translateY(-6px) scale(1.01); 
-                border-color: rgba(255, 255, 255, 0.15);
-                box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1); 
-            } 
+            .bento-card:hover { transform: translateY(-6px) scale(1.01); border-color: rgba(255, 255, 255, 0.15); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1); } 
         }
 
-        /* Tùy chỉnh Thùng rác */
         body.trash-mode .bento-card { border-color: rgba(239, 68, 68, 0.3); background: rgba(69, 10, 10, 0.5) !important; }
         @media (hover: hover) { body.trash-mode .bento-card:hover { border-color: rgba(239, 68, 68, 0.7); box-shadow: 0 15px 40px rgba(239, 68, 68, 0.2); } }
 
-        /* Menu */
+        /* Menu Context */
         .context-menu { display: none; position: fixed; z-index: 5000; width: 220px; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 6px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
         .menu-item { padding: 12px 16px; display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600; border-radius: 10px; cursor: pointer; transition: 0.2s; }
         @media (hover: hover) { .menu-item:hover { background: #3b82f6; color: white; } }
         
-        /* Elements */
         .tag-active { background: rgba(59, 130, 246, 0.9) !important; border-color: transparent !important; color: white !important; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
         body.trash-mode .tag-active { background: rgba(239, 68, 68, 0.9) !important; box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); }
         .color-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid rgba(255,255,255,0.1); transition: 0.3s; position: relative; flex-shrink: 0; box-shadow: inset 0 2px 4px rgba(255,255,255,0.1); }
@@ -80,17 +73,43 @@
         @keyframes pulse-ring { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
 
         .hidden-tab { display: none !important; }
-        
-        /* Input & Controls style update */
         input, select, textarea { transition: border-color 0.3s, box-shadow 0.3s; }
         input:focus, select:focus, textarea:focus { box-shadow: 0 0 0 2px rgba(255,255,255,0.05); }
+
+        /* TOAST ANIMATION */
+        @keyframes toastEnter { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes toastLeave { from { transform: translateX(0); opacity: 1; } to { transform: translateX(100%); opacity: 0; } }
+        .toast { animation: toastEnter 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .toast.leaving { animation: toastLeave 0.3s ease-in forwards; }
     </style>
 </head>
 <body id="appBody" class="theme-notes" oncontextmenu="handleContextMenu(event)" onclick="hideMenus()">
 
-    <div class="bg-mesh">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
+    <div class="bg-mesh"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
+
+    <div id="toastContainer" class="fixed top-5 right-5 z-[9999] flex flex-col gap-3 pointer-events-none"></div>
+
+    <div id="confirmModal" class="fixed inset-0 z-[8000] hidden bg-[#020617]/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm rounded-[2rem] p-6 text-center transform transition-all modal-enter">
+            <div class="w-16 h-16 rounded-full bg-red-500/20 text-red-500 flex items-center justify-center mx-auto mb-4">
+                <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2" id="confirmTitle">Xác nhận</h3>
+            <p class="text-slate-400 text-sm mb-6" id="confirmDesc">Bạn có chắc chắn muốn thực hiện hành động này không?</p>
+            <div class="flex gap-3">
+                <button id="btnConfirmCancel" class="flex-1 py-3 rounded-xl font-bold text-slate-300 bg-white/10 hover:bg-white/20 transition-all">Hủy</button>
+                <button id="btnConfirmOk" class="flex-1 py-3 rounded-xl font-bold text-white bg-red-600 hover:bg-red-500 shadow-[0_5px_15px_rgba(220,38,38,0.4)] transition-all">Đồng ý</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="autoLockWarning" class="fixed inset-0 z-[7000] hidden bg-red-950/90 backdrop-blur-lg flex items-center justify-center p-4 flex-col text-center">
+        <i data-lucide="shield-alert" class="w-20 h-20 text-red-500 mb-4 animate-pulse"></i>
+        <h2 class="text-3xl font-black text-white mb-2 tracking-widest">BẢO MẬT HỆ THỐNG</h2>
+        <p class="text-slate-300 mb-8 text-lg">Ứng dụng sẽ tự động khóa sau <span id="lockCountdown" class="font-black text-white text-2xl mx-1">10</span> giây do không có tương tác.</p>
+        <button onclick="cancelAutoLock()" class="bg-white/10 border border-white/20 text-white px-8 py-4 rounded-full font-bold hover:bg-white/20 transition-all shadow-lg active:scale-95">
+            CHẠM VÀO ĐÂY ĐỂ TIẾP TỤC SỬ DỤNG
+        </button>
     </div>
 
     <div id="lockScreen" class="fixed inset-0 z-[5000] flex items-center justify-center transition-all duration-700 p-4 bg-[#020617]/80 backdrop-blur-md">
@@ -100,10 +119,10 @@
                 <div class="p-6 bg-slate-900/80 border border-white/10 rounded-full relative z-10 shadow-xl"><i data-lucide="cloud" class="w-14 h-14 text-blue-400"></i></div>
             </div>
             <h2 class="text-3xl font-black mb-2 uppercase tracking-widest text-white drop-shadow-lg">WORKSPACE</h2>
-            <p class="text-slate-400 text-sm mb-8 font-medium">Truy cập (Cloud)</p>
+            <p class="text-slate-400 text-sm mb-8 font-medium">(Cloud)</p>
             <input type="password" id="accessKey" placeholder="••••••••" class="w-full bg-slate-950/80 border border-white/10 rounded-2xl py-4 px-6 mb-6 text-center outline-none focus:border-blue-500 font-bold tracking-[0.5em] text-white transition-all text-lg shadow-inner">
             <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2 text-lg">
-                <span>ĐĂNG NHẬP!</span>
+                <span>*LOGIN*</span>
             </button>
         </div>
     </div>
@@ -127,8 +146,8 @@
                         <i data-lucide="wallet" class="w-4 h-4"></i> CHI TIÊU
                     </button>
                 </div>
-                <button onclick="lockAgain()" class="glass-card p-4 rounded-2xl hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all shadow-lg active:scale-90 flex-shrink-0" title="Đóng kết nối">
-                    <i data-lucide="power" class="w-5 h-5"></i>
+                <button onclick="lockAgain()" class="glass-card p-4 rounded-2xl hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all shadow-lg active:scale-90 flex-shrink-0" title="Khóa ứng dụng">
+                    <i data-lucide="lock" class="w-5 h-5"></i>
                 </button>
             </div>
         </header>
@@ -189,19 +208,15 @@
 
             <div class="glass-card rounded-[2.5rem] p-8 relative overflow-hidden mb-8 border-emerald-500/30">
                 <div class="absolute -top-20 -right-20 w-80 h-80 bg-emerald-500/10 blur-[100px] rounded-full"></div>
-                <p class="text-slate-300 font-bold text-sm uppercase tracking-widest mb-3">Số dư chung </p>
+                <p class="text-slate-300 font-bold text-sm uppercase tracking-widest mb-3">Số dư chung gia đình</p>
                 <h2 id="totalFinBalance" class="text-5xl md:text-6xl font-black text-white mb-8 tracking-tight drop-shadow-lg">0đ</h2>
                 <div class="grid grid-cols-2 gap-6 border-t border-white/10 pt-6">
                     <div>
-                        <div class="flex items-center gap-2 text-green-400 mb-2">
-                            <i data-lucide="arrow-down-left" class="w-5 h-5"></i><span class="text-xs font-black uppercase tracking-wider">Tổng Thu</span>
-                        </div>
+                        <div class="flex items-center gap-2 text-green-400 mb-2"><i data-lucide="arrow-down-left" class="w-5 h-5"></i><span class="text-xs font-black uppercase tracking-wider">Tổng Thu</span></div>
                         <p id="totalFinIncome" class="text-2xl font-bold text-white drop-shadow">0đ</p>
                     </div>
                     <div>
-                        <div class="flex items-center gap-2 text-red-400 mb-2">
-                            <i data-lucide="arrow-up-right" class="w-5 h-5"></i><span class="text-xs font-black uppercase tracking-wider">Tổng Chi</span>
-                        </div>
+                        <div class="flex items-center gap-2 text-red-400 mb-2"><i data-lucide="arrow-up-right" class="w-5 h-5"></i><span class="text-xs font-black uppercase tracking-wider">Tổng Chi</span></div>
                         <p id="totalFinExpense" class="text-2xl font-bold text-white drop-shadow">0đ</p>
                     </div>
                 </div>
@@ -210,9 +225,7 @@
             <div class="glass-card rounded-[2rem] p-6 mb-8">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-white font-bold flex items-center gap-2 text-lg"><i data-lucide="users" class="w-5 h-5 text-purple-400"></i> Phân bổ người chi</h3>
-                    <button onclick="addFinMember()" class="text-xs font-bold bg-purple-500/20 text-purple-300 px-4 py-2.5 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/30">
-                        + Thêm người
-                    </button>
+                    <button onclick="addFinMember()" class="text-xs font-bold bg-purple-500/20 text-purple-300 px-4 py-2.5 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/30">+ Thêm người</button>
                 </div>
                 <div id="finMemberStatsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
             </div>
@@ -225,10 +238,8 @@
                 
                 <div class="glass-card rounded-[2rem] p-6 flex flex-col relative overflow-hidden">
                     <div class="flex justify-between items-center mb-6 relative z-10">
-                        <h3 class="text-white font-bold flex items-center gap-2 text-lg"><i data-lucide="list" class="w-5 h-5 text-cyan-400"></i> Lịch sử chi tiêu</h3>
-                        <button onclick="openFinSearchModal()" class="text-cyan-300 hover:text-white bg-cyan-500/20 hover:bg-cyan-500/40 p-2.5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold border border-cyan-500/30">
-                            <i data-lucide="search" class="w-4 h-4"></i> TRA CỨU
-                        </button>
+                        <h3 class="text-white font-bold flex items-center gap-2 text-lg"><i data-lucide="list" class="w-5 h-5 text-cyan-400"></i> Lịch sử </h3>
+                        <button onclick="openFinSearchModal()" class="text-cyan-300 hover:text-white bg-cyan-500/20 hover:bg-cyan-500/40 p-2.5 rounded-xl transition-all flex items-center gap-2 text-xs font-bold border border-cyan-500/30"><i data-lucide="search" class="w-4 h-4"></i> TRA CỨU</button>
                     </div>
                     <div id="finTransactionList" class="space-y-3 overflow-y-auto max-h-[300px] pr-2 relative z-10 hide-scrollbar"></div>
                 </div>
@@ -243,9 +254,8 @@
     </main>
 
     <div id="noteModal" class="fixed inset-0 z-[6000] hidden bg-[#020617]/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto">
-        <div class="bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] md:rounded-[3rem] p-6 md:p-10 shadow-2xl my-auto relative modal-enter">
-            <h2 id="noteModalTitle" class="text-2xl font-bold mb-6 text-white tracking-tight"></h2>
-            
+        <div class="bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] p-6 shadow-2xl relative modal-enter">
+            <h2 id="noteModalTitle" class="text-2xl font-bold mb-6 text-white"></h2>
             <div id="colorPicker" class="flex gap-4 mb-8 justify-center bg-black/20 p-4 rounded-2xl flex-wrap border border-white/5">
                 <div onclick="window.setNoteColor('rgba(15, 23, 42, 0.45)')" class="color-dot bg-slate-700 active" data-color="rgba(15, 23, 42, 0.45)"></div>
                 <div onclick="window.setNoteColor('rgba(127, 29, 29, 0.45)')" class="color-dot bg-red-900" data-color="rgba(127, 29, 29, 0.45)"></div>
@@ -254,137 +264,62 @@
                 <div onclick="window.setNoteColor('rgba(88, 28, 135, 0.45)')" class="color-dot bg-purple-900" data-color="rgba(88, 28, 135, 0.45)"></div>
                 <div onclick="window.setNoteColor('rgba(120, 53, 15, 0.45)')" class="color-dot bg-orange-900" data-color="rgba(120, 53, 15, 0.45)"></div>
             </div>
-            
-            <input id="nTitle" type="text" placeholder="Tiêu đề ghi chú..." class="w-full bg-black/20 rounded-2xl p-4 mb-5 outline-none border border-white/5 focus:border-blue-500 text-white font-bold text-xl placeholder-slate-500">
-            
-            <div class="flex justify-between items-end mb-2 px-2">
-                <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Phân loại</label>
-                <button type="button" onclick="window.openNoteCatManager()" class="text-[10px] text-blue-400 font-bold uppercase hover:text-blue-300 transition-colors">+ Quản lý</button>
-            </div>
-            <select id="nTag" class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 mb-6 outline-none cursor-pointer font-semibold text-slate-200 text-base focus:border-blue-500 appearance-none"></select>
-            
+            <input id="nTitle" type="text" placeholder="Tiêu đề..." class="w-full bg-black/20 rounded-2xl p-4 mb-5 outline-none border border-white/5 focus:border-blue-500 text-white font-bold text-xl">
+            <select id="nTag" class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 mb-6 outline-none cursor-pointer font-semibold text-slate-200 focus:border-blue-500 appearance-none"></select>
             <div class="relative w-full mb-8">
-                <textarea id="nContent" rows="8" placeholder="Nội dung chi tiết..." class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 pr-14 outline-none resize-none text-slate-200 text-base leading-relaxed focus:border-blue-500 placeholder-slate-500"></textarea>
-                <div class="absolute bottom-3 right-3">
-                    <button id="noteMicBtn" onclick="window.toggleNoteVoice()" class="p-3 bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-xl transition-all active:scale-90 shadow-sm" title="Nhập bằng giọng nói">
-                        <i data-lucide="mic" class="w-6 h-6"></i>
-                    </button>
-                </div>
+                <textarea id="nContent" rows="8" placeholder="Nội dung..." class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 pr-14 outline-none resize-none text-slate-200 leading-relaxed focus:border-blue-500"></textarea>
+                <button id="noteMicBtn" onclick="window.toggleNoteVoice()" class="absolute bottom-3 right-3 p-3 bg-blue-500/20 text-blue-400 hover:bg-blue-500 hover:text-white rounded-xl transition-all shadow-sm"><i data-lucide="mic" class="w-6 h-6"></i></button>
             </div>
-            <div class="flex gap-4 flex-col md:flex-row">
-                <button onclick="window.saveNote()" class="w-full py-4 rounded-2xl font-bold transition-all shadow-[0_5px_20px_rgba(59,130,246,0.3)] bg-blue-600 hover:bg-blue-500 text-white text-lg active:scale-95">LƯU LẠI</button>
-                <button onclick="window.closeNoteModal()" class="w-full py-4 rounded-2xl font-bold hover:bg-slate-800 bg-black/30 border border-white/5 text-slate-300 text-lg transition-all">HỦY BỎ</button>
+            <div class="flex gap-4">
+                <button onclick="window.saveNote()" class="flex-1 py-4 rounded-2xl font-bold bg-blue-600 hover:bg-blue-500 text-white">LƯU LẠI</button>
+                <button onclick="window.closeNoteModal()" class="flex-1 py-4 rounded-2xl font-bold bg-black/30 border border-white/5 text-slate-300 hover:bg-slate-800">HỦY</button>
             </div>
         </div>
     </div>
 
-    <div id="noteCatModal" class="fixed inset-0 z-[6001] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-[2.5rem] p-6 md:p-8 shadow-2xl mx-4 relative modal-enter">
-            <button onclick="document.getElementById('noteCatModal').classList.add('hidden')" class="absolute top-6 right-6 text-slate-400 hover:text-white bg-black/20 p-2 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 class="text-xl font-bold mb-6 flex items-center gap-2 text-white"><i data-lucide="layers" class="text-blue-500"></i> Quản lý phân loại</h2>
-            <div class="flex gap-2 mb-6">
-                <input id="newNoteCatInp" type="text" placeholder="Tên danh mục mới..." class="flex-1 bg-black/20 rounded-xl px-4 py-3 outline-none border border-white/5 focus:border-blue-500 font-semibold text-white placeholder-slate-500">
-                <button onclick="window.addNoteCat()" class="bg-blue-600 px-5 rounded-xl font-bold hover:bg-blue-500 text-white transition-all shadow-md">+</button>
-            </div>
-            <div id="noteCatListDisplay" class="space-y-2 max-h-60 overflow-y-auto mb-6 pr-2 hide-scrollbar"></div>
-        </div>
-    </div>
-
-    <div id="finTransactionModal" class="fixed inset-0 bg-[#020617]/80 backdrop-blur-md z-[6000] hidden flex items-end md:items-center justify-center p-4">
-        <div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-[2.5rem] p-6 md:p-8 shadow-2xl relative overflow-y-auto max-h-[90vh] modal-enter">
-            <button onclick="closeFinModal('finTransactionModal')" class="absolute top-6 right-6 text-slate-400 hover:text-white bg-black/20 p-2 rounded-full transition-colors">
-                <i data-lucide="x" class="w-5 h-5"></i>
-            </button>
-            <h2 id="finModalTitle" class="text-2xl font-black mb-6 text-white tracking-tight">Giao dịch mới</h2>
-            
-            <button id="finBtnVoice" onclick="startFinVoiceTyping()" type="button" class="w-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 p-4 rounded-2xl mb-6 flex items-center justify-center gap-3 font-bold transition-all shadow-inner">
-                <i data-lucide="mic" class="w-5 h-5"></i> <span>Chạm để nói (VD: "Đi chợ 200 nghìn")</span>
-            </button>
-
+    <div id="finTransactionModal" class="fixed inset-0 bg-[#020617]/80 backdrop-blur-md z-[6000] hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-[2.5rem] p-6 shadow-2xl relative overflow-y-auto max-h-[90vh] modal-enter">
+            <button onclick="closeFinModal('finTransactionModal')" class="absolute top-6 right-6 text-slate-400 hover:text-white bg-black/20 p-2 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h2 id="finModalTitle" class="text-2xl font-black mb-6 text-white">Giao dịch mới</h2>
+            <button id="finBtnVoice" onclick="startFinVoiceTyping()" type="button" class="w-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20 p-4 rounded-2xl mb-6 flex items-center justify-center gap-3 font-bold transition-all"><i data-lucide="mic" class="w-5 h-5"></i> <span>Chạm để nói...</span></button>
             <div class="flex p-1 bg-black/30 border border-white/5 rounded-2xl mb-6">
-                <button id="finBtnTypeExp" type="button" onclick="setFinType('expense')" class="flex-1 py-3 rounded-xl text-sm font-bold bg-red-500 text-white shadow-md transition-all">CHI TIỀN</button>
-                <button id="finBtnTypeInc" type="button" onclick="setFinType('income')" class="flex-1 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition-all">THU TIỀN</button>
+                <button id="finBtnTypeExp" type="button" onclick="setFinType('expense')" class="flex-1 py-3 rounded-xl text-sm font-bold bg-red-500 text-white shadow-md">CHI TIỀN</button>
+                <button id="finBtnTypeInc" type="button" onclick="setFinType('income')" class="flex-1 py-3 rounded-xl text-sm font-bold text-slate-400 hover:text-white">THU TIỀN</button>
             </div>
-
-            <form onsubmit="saveFinTransaction(event)" class="space-y-5">
+            <form onsubmit="saveFinTransaction(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Số tiền (VNĐ)</label>
-                    <input type="text" id="finInpAmount" required placeholder="0" oninput="formatCurrencyInput(this)" class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-3xl font-black text-emerald-400 outline-none focus:border-emerald-500 transition-colors shadow-inner placeholder-slate-600">
+                    <label class="block text-xs font-black text-slate-400 mb-2">SỐ TIỀN (VNĐ)</label>
+                    <input type="text" id="finInpAmount" required placeholder="0" oninput="formatCurrencyInput(this)" class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-3xl font-black text-emerald-400 outline-none focus:border-emerald-500">
                 </div>
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <div class="flex justify-between items-end mb-2 px-1">
-                            <label class="block text-xs font-black text-slate-400 uppercase tracking-widest">Danh mục</label>
-                            <button type="button" onclick="openFinCatManager()" class="text-[10px] text-cyan-400 font-bold uppercase hover:text-cyan-300 transition-colors">+ Quản lý</button>
-                        </div>
+                        <label class="block text-xs font-black text-slate-400 mb-2">DANH MỤC</label>
                         <select id="finInpCategory" class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-white font-semibold outline-none focus:border-emerald-500 appearance-none"></select>
                     </div>
                     <div>
-                        <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Ngày GD</label>
+                        <label class="block text-xs font-black text-slate-400 mb-2">NGÀY</label>
                         <input type="date" id="finInpDate" required class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-white font-semibold outline-none focus:border-emerald-500 [color-scheme:dark]">
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Người chi / Nguồn thu</label>
+                    <label class="block text-xs font-black text-slate-400 mb-2">NGƯỜI CHI / THU</label>
                     <select id="finInpMember" class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-white font-semibold outline-none focus:border-purple-500 appearance-none"></select>
                 </div>
                 <div>
-                    <label class="block text-xs font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Ghi chú chi tiết</label>
-                    <input type="text" id="finInpNote" placeholder="Ví dụ: Tiền điện tháng này..." class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-white font-medium outline-none focus:border-emerald-500 placeholder-slate-500">
+                    <label class="block text-xs font-black text-slate-400 mb-2">GHI CHÚ</label>
+                    <input type="text" id="finInpNote" placeholder="Ví dụ: Tiền điện..." class="w-full bg-black/20 border border-white/5 rounded-2xl p-4 text-white font-medium outline-none focus:border-emerald-500">
                 </div>
                 <div class="flex gap-3 pt-2">
-                    <button type="submit" id="finBtnSubmit" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-white font-black py-4 rounded-2xl shadow-[0_5px_20px_rgba(16,185,129,0.3)] active:scale-95 transition-all text-lg">LƯU GIAO DỊCH</button>
-                    <button type="button" id="finBtnDelSingle" onclick="deleteSingleFinTransaction()" class="hidden bg-red-500/10 border border-red-500/30 text-red-500 hover:bg-red-500 hover:text-white py-4 px-6 rounded-2xl active:scale-95 transition-all"><i data-lucide="trash-2" class="w-6 h-6"></i></button>
+                    <button type="submit" class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-white font-black py-4 rounded-2xl">LƯU GIAO DỊCH</button>
+                    <button type="button" id="finBtnDelSingle" onclick="deleteSingleFinTransaction()" class="hidden bg-red-500/10 border border-red-500/30 text-red-500 py-4 px-6 rounded-2xl"><i data-lucide="trash-2" class="w-6 h-6"></i></button>
                 </div>
             </form>
         </div>
     </div>
 
-    <div id="finCatModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[6001] hidden flex items-center justify-center p-4">
-        <div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-[2.5rem] p-6 shadow-2xl relative modal-enter">
-            <button onclick="closeFinModal('finCatModal')" class="absolute top-6 right-6 text-slate-400 hover:text-white bg-black/20 p-2 rounded-full transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 class="text-xl font-black text-white mb-6 flex items-center gap-2"><i data-lucide="layers" class="text-cyan-400 w-6 h-6"></i> Quản lý Danh mục</h2>
-            <div class="flex p-1 bg-black/30 border border-white/5 rounded-2xl mb-5">
-                <button id="finBtnCatExpTab" onclick="switchFinCatTab('expense')" class="flex-1 py-2.5 rounded-xl text-sm font-bold bg-red-500 text-white shadow-md transition-all">CHI TIỀN</button>
-                <button id="finBtnCatIncTab" onclick="switchFinCatTab('income')" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition-all">THU TIỀN</button>
-            </div>
-            <div class="flex gap-3 mb-6 items-center bg-black/20 p-2 rounded-2xl border border-white/5">
-                <div class="relative w-12 h-12 flex-shrink-0 rounded-xl overflow-hidden border-2 border-white/10 cursor-pointer shadow-inner">
-                    <input type="color" id="newFinCatColor" class="absolute -top-4 -left-4 w-20 h-20 cursor-pointer">
-                </div>
-                <input type="text" id="newFinCatName" placeholder="Tên danh mục..." class="flex-1 bg-transparent border-none px-2 text-white font-semibold outline-none placeholder-slate-500">
-                <button onclick="addFinCategory()" class="bg-cyan-500 hover:bg-cyan-400 text-white font-bold w-12 h-12 rounded-xl transition-all shadow-md text-lg flex items-center justify-center"><i data-lucide="plus" class="w-5 h-5"></i></button>
-            </div>
-            <div id="finCatListDisplay" class="space-y-2 max-h-60 overflow-y-auto pr-2 hide-scrollbar"></div>
-        </div>
-    </div>
-
-    <div id="finSearchModal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[6000] hidden flex flex-col p-4 md:p-8 modal-enter">
-        <div class="max-w-3xl w-full mx-auto flex-1 flex flex-col h-full">
-            <div class="flex items-center gap-4 mb-8 pt-4">
-                <button onclick="closeFinModal('finSearchModal')" class="bg-white/10 p-3 rounded-2xl text-slate-300 hover:text-white hover:bg-white/20 transition-all"><i data-lucide="arrow-left" class="w-6 h-6"></i></button>
-                <h2 class="text-3xl font-black text-white tracking-tight">Tra cứu đa diện</h2>
-            </div>
-            <div class="space-y-4 mb-8">
-                <div class="relative">
-                    <i data-lucide="search" class="absolute left-5 top-4 text-cyan-500 w-6 h-6"></i>
-                    <input type="text" id="finSearchInput" oninput="executeFinSearch()" placeholder="Nhập từ khóa, số tiền..." class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-14 text-white text-lg font-semibold outline-none focus:border-cyan-500 transition-all shadow-inner">
-                </div>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <select id="finSearchType" onchange="executeFinSearch()" class="bg-white/5 border border-white/10 rounded-xl p-3.5 text-sm font-semibold text-slate-200 outline-none focus:border-cyan-500 appearance-none"><option value="all">Loại: Tất cả</option><option value="expense">Chỉ Chi tiêu</option><option value="income">Chỉ Thu nhập</option></select>
-                    <select id="finSearchCat" onchange="executeFinSearch()" class="bg-white/5 border border-white/10 rounded-xl p-3.5 text-sm font-semibold text-slate-200 outline-none focus:border-cyan-500 appearance-none"><option value="all">Danh mục: Mọi</option></select>
-                    <select id="finSearchMem" onchange="executeFinSearch()" class="bg-white/5 border border-white/10 rounded-xl p-3.5 text-sm font-semibold text-slate-200 outline-none focus:border-cyan-500 appearance-none"><option value="all">Người chi: Mọi</option></select>
-                    <button onclick="resetFinSearch()" class="bg-red-500/10 border border-red-500/20 text-red-400 rounded-xl p-3.5 text-sm font-bold hover:bg-red-500 hover:text-white transition-all">Xóa bộ lọc</button>
-                </div>
-            </div>
-            <div class="flex justify-between items-center mb-4 px-2 border-b border-white/10 pb-4">
-                <p class="text-slate-300 font-medium">Tìm thấy <span id="finSearchCount" class="font-black text-white text-lg mx-1">0</span> kết quả</p>
-                <p class="text-slate-300 font-medium">Tổng tiền: <span id="finSearchSum" class="font-black text-2xl ml-2 text-emerald-400 drop-shadow">0đ</span></p>
-            </div>
-            <div id="finSearchResults" class="flex-1 overflow-y-auto space-y-3 pb-20 pr-2 hide-scrollbar"></div>
-        </div>
-    </div>
-
+    <div id="noteCatModal" class="fixed inset-0 z-[6001] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4"><div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-[2.5rem] p-6 modal-enter"><button onclick="document.getElementById('noteCatModal').classList.add('hidden')" class="absolute top-6 right-6 text-slate-400 bg-black/20 p-2 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button><h2 class="text-xl font-bold mb-6 text-white">Quản lý phân loại</h2><div class="flex gap-2 mb-6"><input id="newNoteCatInp" type="text" placeholder="Tên..." class="flex-1 bg-black/20 rounded-xl px-4 py-3 text-white border border-white/5"><button onclick="window.addNoteCat()" class="bg-blue-600 px-5 rounded-xl font-bold text-white">+</button></div><div id="noteCatListDisplay" class="space-y-2 max-h-60 overflow-y-auto"></div></div></div>
+    <div id="finCatModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[6001] hidden flex items-center justify-center p-4"><div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-[2.5rem] p-6 modal-enter"><button onclick="closeFinModal('finCatModal')" class="absolute top-6 right-6 text-slate-400 bg-black/20 p-2 rounded-full"><i data-lucide="x" class="w-5 h-5"></i></button><h2 class="text-xl font-bold mb-6 text-white">Quản lý Danh mục</h2><div class="flex p-1 bg-black/30 border border-white/5 rounded-2xl mb-4"><button id="finBtnCatExpTab" onclick="switchFinCatTab('expense')" class="flex-1 py-2.5 rounded-xl text-sm font-bold bg-red-500 text-white">CHI TIỀN</button><button id="finBtnCatIncTab" onclick="switchFinCatTab('income')" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-400">THU TIỀN</button></div><div class="flex gap-3 mb-6 bg-black/20 p-2 rounded-2xl border border-white/5"><div class="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-white/10"><input type="color" id="newFinCatColor" class="absolute -top-4 -left-4 w-20 h-20"></div><input type="text" id="newFinCatName" placeholder="Tên..." class="flex-1 bg-transparent text-white font-semibold outline-none"><button onclick="addFinCategory()" class="bg-cyan-500 text-white font-bold w-12 h-12 rounded-xl">+</button></div><div id="finCatListDisplay" class="space-y-2 max-h-60 overflow-y-auto pr-2"></div></div></div>
+    <div id="finSearchModal" class="fixed inset-0 bg-[#020617]/95 backdrop-blur-xl z-[6000] hidden flex flex-col p-4 md:p-8 modal-enter"><div class="max-w-3xl w-full mx-auto flex-1 flex flex-col h-full"><div class="flex items-center gap-4 mb-8 pt-4"><button onclick="closeFinModal('finSearchModal')" class="bg-white/10 p-3 rounded-2xl text-slate-300"><i data-lucide="arrow-left" class="w-6 h-6"></i></button><h2 class="text-3xl font-black text-white">Tra cứu đa diện</h2></div><div class="space-y-4 mb-8"><div class="relative"><i data-lucide="search" class="absolute left-5 top-4 text-cyan-500 w-6 h-6"></i><input type="text" id="finSearchInput" oninput="executeFinSearch()" placeholder="Nhập từ khóa, số tiền..." class="w-full bg-white/5 border border-white/10 rounded-2xl p-4 pl-14 text-white outline-none focus:border-cyan-500"></div><div class="grid grid-cols-2 md:grid-cols-4 gap-3"><select id="finSearchType" onchange="executeFinSearch()" class="bg-white/5 border border-white/10 rounded-xl p-3.5 text-slate-200"><option value="all">Loại: Tất cả</option><option value="expense">Chỉ Chi tiêu</option><option value="income">Chỉ Thu nhập</option></select><select id="finSearchCat" onchange="executeFinSearch()" class="bg-white/5 border border-white/10 rounded-xl p-3.5 text-slate-200"></select><select id="finSearchMem" onchange="executeFinSearch()" class="bg-white/5 border border-white/10 rounded-xl p-3.5 text-slate-200"></select><button onclick="resetFinSearch()" class="bg-red-500/10 text-red-400 rounded-xl p-3.5 font-bold">Xóa bộ lọc</button></div></div><div class="flex justify-between items-center mb-4 px-2 border-b border-white/10 pb-4"><p class="text-slate-300">Tìm thấy <span id="finSearchCount" class="font-black text-white text-lg mx-1">0</span> kết quả</p><p class="text-slate-300">Tổng: <span id="finSearchSum" class="font-black text-2xl ml-2 text-emerald-400">0đ</span></p></div><div id="finSearchResults" class="flex-1 overflow-y-auto space-y-3 pb-20 pr-2"></div></div></div>
 
     <script>
         const SUPABASE_URL = 'https://caxvdrchiwhdpmdzmqez.supabase.co';
@@ -408,44 +343,89 @@
             ]
         };
 
-        let currentUserData = { 
-            notes: [], trash: [], noteCats: ["Tất cả", "Học tập", "Công việc"],
-            finance: { transactions: [], members: ['Quỹ Chung', 'Thuận'], categories: defaultFinCats }
-        };
+        let currentUserData = { notes: [], trash: [], noteCats: ["Tất cả", "Học tập", "Công việc"], finance: { transactions: [], members: ['Quỹ Chung', 'Thuận'], categories: defaultFinCats } };
 
-        let isTrashView = false;
-        let currentNoteFilter = "Tất cả";
-        let selectedNoteId = null;
-        let selectedNoteColor = 'rgba(15, 23, 42, 0.45)';
-
-        let currentFinType = 'expense'; 
-        let finChart = null;
-        let editingFinId = null; 
-        let finViewDate = new Date(); 
-        let currentFinCatTab = 'expense';
-
-        let recognition = null;
-        let isRecordingNote = false;
-        let isRecordingFin = false;
+        let isTrashView = false; let currentNoteFilter = "Tất cả"; let selectedNoteId = null; let selectedNoteColor = 'rgba(15, 23, 42, 0.45)';
+        let currentFinType = 'expense'; let finChart = null; let editingFinId = null; let finViewDate = new Date(); let currentFinCatTab = 'expense';
+        let recognition = null; let isRecordingNote = false; let isRecordingFin = false;
 
         // ==========================================
-        // BẢO MẬT: TỰ ĐỘNG KHÓA SAU 1 PHÚT KHÔNG HOẠT ĐỘNG
+        // 1. HỆ THỐNG TOAST & CONFIRM (NÂNG CẤP MỚI)
+        // ==========================================
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            const isSuccess = type === 'success';
+            const icon = isSuccess ? 'check-circle' : (type === 'error' ? 'alert-octagon' : 'info');
+            const bgColor = isSuccess ? 'bg-emerald-500/20' : (type === 'error' ? 'bg-red-500/20' : 'bg-blue-500/20');
+            const borderColor = isSuccess ? 'border-emerald-500/50' : (type === 'error' ? 'border-red-500/50' : 'border-blue-500/50');
+            const textColor = isSuccess ? 'text-emerald-400' : (type === 'error' ? 'text-red-400' : 'text-blue-400');
+
+            toast.className = `toast flex items-center gap-3 px-5 py-4 rounded-2xl border backdrop-blur-md shadow-2xl ${bgColor} ${borderColor}`;
+            toast.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5 ${textColor}"></i><span class="text-white font-semibold text-sm">${message}</span>`;
+            
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            setTimeout(() => {
+                toast.classList.add('leaving');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        let confirmCallback = null;
+        function showConfirmDialog(title, desc, callback) {
+            document.getElementById('confirmTitle').innerText = title;
+            document.getElementById('confirmDesc').innerText = desc;
+            confirmCallback = callback;
+            document.getElementById('confirmModal').classList.remove('hidden');
+        }
+        
+        document.getElementById('btnConfirmCancel').onclick = () => { document.getElementById('confirmModal').classList.add('hidden'); confirmCallback = null; };
+        document.getElementById('btnConfirmOk').onclick = () => { document.getElementById('confirmModal').classList.add('hidden'); if(confirmCallback) confirmCallback(); confirmCallback = null; };
+
+
+        // ==========================================
+        // 2. BẢO MẬT: AUTO-LOCK THÔNG MINH (3 PHÚT)
         // ==========================================
         let idleTimer;
+        let warningTimer;
+        let countdownInterval;
+
+        function cancelAutoLock() {
+            document.getElementById('autoLockWarning').classList.add('hidden');
+            clearInterval(countdownInterval);
+            resetIdleTimer();
+        }
+
         function resetIdleTimer() {
             clearTimeout(idleTimer);
-            // Chỉ bắt đầu đếm ngược nếu người dùng đã đăng nhập (có currentKey)
-            if (currentKey !== "") {
+            clearTimeout(warningTimer);
+            
+            if (currentKey !== "" && document.getElementById('autoLockWarning').classList.contains('hidden')) {
+                // 2 phút 50 giây -> Hiện cảnh báo
+                warningTimer = setTimeout(() => {
+                    document.getElementById('autoLockWarning').classList.remove('hidden');
+                    let timeLeft = 10;
+                    document.getElementById('lockCountdown').innerText = timeLeft;
+                    
+                    countdownInterval = setInterval(() => {
+                        timeLeft--;
+                        document.getElementById('lockCountdown').innerText = timeLeft;
+                        if(timeLeft <= 0) clearInterval(countdownInterval);
+                    }, 1000);
+                }, 170000); // 170s
+
+                // Đúng 3 phút (180s) -> Khóa thật
                 idleTimer = setTimeout(() => {
-                    alert("Đã khóa màn hình do không hoạt động trong 1 phút để bảo mật dữ liệu!");
-                    window.lockAgain(); // Reset trang, xóa dữ liệu trên RAM
-                }, 60000); // 60,000 ms = 1 phút
+                    window.lockAgain(); 
+                }, 180000);
             }
         }
 
         function setupIdleTracking() {
-            // Lắng nghe tất cả các sự kiện thao tác của người dùng
-            ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll', 'click'].forEach(evt => 
+            ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll'].forEach(evt => 
                 document.addEventListener(evt, resetIdleTimer, true)
             );
         }
@@ -453,7 +433,7 @@
 
 
         // ==========================================
-        // ĐỒNG BỘ ĐÁM MÂY (CLOUD SYNC)
+        // 3. ĐỒNG BỘ ĐÁM MÂY (CLOUD SYNC)
         // ==========================================
         async function syncToCloud() {
             try {
@@ -464,12 +444,14 @@
             } catch (error) {
                 console.error("Lỗi đồng bộ:", error);
                 document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-red-500";
+                showToast("Lỗi đồng bộ Cloud!", "error");
             }
         }
 
         window.unlockApp = async function() {
             const key = document.getElementById('accessKey').value.trim();
-            if(!key) return;
+            if(!key) return showToast("Vui lòng nhập mã khóa", "error");
+            
             const btn = document.getElementById('unlockBtn');
             btn.innerHTML = `<i data-lucide="loader-2" class="animate-spin w-6 h-6"></i> ĐANG TẢI...`;
             lucide.createIcons();
@@ -479,26 +461,14 @@
                 const { data, error } = await supabaseClient.from('note_spaces').select('payload').eq('access_key', currentKey).single();
                 if (data && data.payload) { 
                     currentUserData = data.payload; 
-                    
-                    // --- ĐOẠN CODE VÁ LỖI DỮ LIỆU ---
-                    if(!currentUserData.noteCats && currentUserData.cats) { 
-                        currentUserData.noteCats = currentUserData.cats; 
-                    }
+                    if(!currentUserData.noteCats && currentUserData.cats) currentUserData.noteCats = currentUserData.cats;
                     if(!currentUserData.finance || Array.isArray(currentUserData.finance)) { 
-                        let oldTransactions = Array.isArray(currentUserData.finance) ? currentUserData.finance : [];
-                        currentUserData.finance = { 
-                            transactions: oldTransactions, 
-                            members: ['Quỹ Chung', 'Thuận'], 
-                            categories: defaultFinCats 
-                        }; 
+                        currentUserData.finance = { transactions: Array.isArray(currentUserData.finance)?currentUserData.finance:[], members: ['Quỹ Chung', 'Thuận'], categories: defaultFinCats }; 
                     }
                     if(!currentUserData.finance.transactions) currentUserData.finance.transactions = [];
                     if(!currentUserData.finance.members) currentUserData.finance.members = ['Quỹ Chung', 'Thuận'];
                     if(!currentUserData.finance.categories) currentUserData.finance.categories = defaultFinCats;
-                    
-                } else { 
-                    await syncToCloud(); 
-                }
+                } else { await syncToCloud(); }
                 
                 document.getElementById('lockScreen').classList.add('opacity-0', 'invisible');
                 document.getElementById('mainApp').classList.remove('blur-screen');
@@ -506,8 +476,9 @@
                 
                 initVoiceAPI();
                 switchAppTab('notes');
-                resetIdleTimer(); // Kích hoạt bộ đếm thời gian khi đăng nhập thành công
-            } catch (err) { console.error(err); }
+                resetIdleTimer();
+                showToast("Đăng nhập thành công!", "success");
+            } catch (err) { console.error(err); showToast("Lỗi máy chủ", "error"); }
             btn.innerHTML = `<span>KẾT NỐI DATABASE</span>`;
         }
 
@@ -528,7 +499,7 @@
                 tNotes.classList.remove('hidden-tab'); tFin.classList.add('hidden-tab');
                 btnN.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all bg-blue-500/90 text-white shadow-lg flex items-center justify-center gap-2";
                 btnF.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2 bg-transparent";
-                title.innerText = "NOTE OS";
+                title.innerText = "NOTE";
                 body.classList.add('theme-notes');
                 if(isTrashView) body.classList.add('trash-mode');
                 renderNotes();
@@ -536,7 +507,7 @@
                 tNotes.classList.add('hidden-tab'); tFin.classList.remove('hidden-tab');
                 btnF.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all bg-emerald-500/90 text-white shadow-lg flex items-center justify-center gap-2";
                 btnN.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2 bg-transparent";
-                title.innerText = "FINANCE OS";
+                title.innerText = "QUỸ CHI TIÊU";
                 body.classList.add('theme-finance');
                 hideMenus(); 
                 renderFinanceDashboard();
@@ -545,45 +516,68 @@
         }
 
         // ==========================================
-        // CÁC HÀM XỬ LÝ KHÁC ĐƯỢC GIỮ NGUYÊN BÊN DƯỚI...
+        // 4. VOICE TYPING
         // ==========================================
+        function initVoiceAPI() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SR(); recognition.lang = 'vi-VN'; recognition.continuous = false; recognition.interimResults = false;
+                recognition.onresult = (e) => {
+                    const text = e.results[0][0].transcript;
+                    if(isRecordingNote) document.getElementById('nContent').value += (document.getElementById('nContent').value ? ' ' : '') + text;
+                    else if (isRecordingFin) processFinVoiceText(text.toLowerCase());
+                };
+                recognition.onend = () => {
+                    if(isRecordingNote) { isRecordingNote = false; document.getElementById('noteMicBtn').classList.remove('!bg-blue-500', 'animate-pulse'); }
+                    if(isRecordingFin) {
+                        isRecordingFin = false;
+                        const btn = document.getElementById('finBtnVoice');
+                        btn.classList.remove('mic-recording', 'bg-emerald-500', 'text-white', 'border-emerald-500/0');
+                        btn.classList.add('bg-emerald-500/10', 'text-emerald-400', 'border-emerald-500/30');
+                        btn.innerHTML = `<i data-lucide="mic" class="w-5 h-5"></i> <span>Chạm để nói...</span>`;
+                    }
+                    lucide.createIcons();
+                };
+                recognition.onerror = () => showToast("Lỗi nhận diện giọng nói", "error");
+            }
+        }
 
-        function renderNotes() {
+        // ==========================================
+        // 5. LOGIC NOTE OS (Cập nhật dùng Custom Confirm)
+        // ==========================================
+        window.toggleNoteVoice = function() {
+            if (!recognition) return showToast("Trình duyệt không hỗ trợ", "error");
+            if(isRecordingNote) { recognition.stop(); return; }
+            isRecordingNote = true; document.getElementById('noteMicBtn').classList.add('!bg-blue-500', 'animate-pulse');
+            try{ recognition.start(); }catch(e){}
+        }
+
+        window.renderNotes = function() {
             if(currentTab !== 'notes') return;
-            const grid = document.getElementById('notesGrid');
-            const search = document.getElementById('noteSearchInput').value.toLowerCase();
-            const body = document.getElementById('appBody');
+            const grid = document.getElementById('notesGrid'); const search = document.getElementById('noteSearchInput').value.toLowerCase();
+            const body = document.getElementById('appBody'); body.classList.remove('trash-mode');
             
-            body.classList.remove('trash-mode');
             if(isTrashView) {
                 body.classList.add('trash-mode');
-                document.getElementById('navIcon').setAttribute('data-lucide', 'layout-dashboard');
-                document.getElementById('navIcon').className = "text-red-400 w-6 h-6 md:w-7 md:h-7";
+                document.getElementById('navIcon').setAttribute('data-lucide', 'layout-dashboard'); document.getElementById('navIcon').className = "text-red-400 w-6 h-6 md:w-7 md:h-7";
                 document.getElementById('trashCount').className = "absolute -top-2 -right-2 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black bg-red-600 text-white shadow-md";
                 document.getElementById('clearTrashBtn').style.display = currentUserData.trash.length > 0 ? 'block' : 'none';
                 document.getElementById('noteAddBtnContainer').style.display = 'none';
             } else {
-                document.getElementById('navIcon').setAttribute('data-lucide', 'trash-2');
-                document.getElementById('navIcon').className = "text-slate-400 w-6 h-6 md:w-7 md:h-7";
+                document.getElementById('navIcon').setAttribute('data-lucide', 'trash-2'); document.getElementById('navIcon').className = "text-slate-400 w-6 h-6 md:w-7 md:h-7";
                 document.getElementById('trashCount').className = "absolute -top-2 -right-2 text-[10px] w-5 h-5 rounded-full flex items-center justify-center font-black bg-blue-600 text-white shadow-md";
-                document.getElementById('clearTrashBtn').style.display = 'none';
-                document.getElementById('noteAddBtnContainer').style.display = 'flex';
+                document.getElementById('clearTrashBtn').style.display = 'none'; document.getElementById('noteAddBtnContainer').style.display = 'flex';
             }
-            
             document.getElementById('trashCount').innerText = currentUserData.trash.length;
 
-            const filterBar = document.getElementById('filterBar');
-            filterBar.innerHTML = '';
+            const filterBar = document.getElementById('filterBar'); filterBar.innerHTML = '';
             currentUserData.noteCats.forEach(c => {
                 const btn = document.createElement('button');
                 btn.className = `px-5 py-2 rounded-full text-sm font-bold border transition-all whitespace-nowrap flex-shrink-0 ${currentNoteFilter === c ? 'tag-active border-transparent' : 'glass-card text-slate-300 hover:text-white hover:border-white/20'}`;
-                btn.innerText = c;
-                btn.onclick = () => { currentNoteFilter = c; isTrashView = false; renderNotes(); };
-                filterBar.appendChild(btn);
+                btn.innerText = c; btn.onclick = () => { currentNoteFilter = c; isTrashView = false; renderNotes(); }; filterBar.appendChild(btn);
             });
 
-            const nTag = document.getElementById('nTag');
-            nTag.innerHTML = currentUserData.noteCats.filter(c => c !== "Tất cả").map(c => `<option value="${c}">${c}</option>`).join('');
+            const nTag = document.getElementById('nTag'); nTag.innerHTML = currentUserData.noteCats.filter(c => c !== "Tất cả").map(c => `<option value="${c}">${c}</option>`).join('');
 
             grid.innerHTML = '';
             let dataSource = isTrashView ? currentUserData.trash : currentUserData.notes;
@@ -592,31 +586,26 @@
             if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-white/10 text-slate-500'} rounded-[2rem] p-10 text-center font-bold">Không gian trống...</div>`;
 
             filtered.forEach(n => {
-                const div = document.createElement('div');
-                div.className = `bento-card p-5 md:p-6 rounded-[2rem] relative`;
+                const div = document.createElement('div'); div.className = `bento-card p-5 md:p-6 rounded-[2rem] relative`;
                 if(!isTrashView) div.style.background = (n.color || 'rgba(15, 23, 42, 0.45)');
                 
+                // Highlight search text logic
+                const highlight = (text) => {
+                    if(!search) return text;
+                    const regex = new RegExp(`(${search})`, 'gi');
+                    return text.replace(regex, '<mark class="bg-blue-500/50 text-white rounded px-1">$1</mark>');
+                };
+
                 div.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
-                        <span class="text-[9px] font-black uppercase tracking-widest bg-white/10 border border-white/5 text-white px-3 py-1.5 rounded-full shadow-inner">${n.tag}</span>
-                        <div class="flex gap-2 relative z-10">
-                            ${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/40 hover:text-green-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md"><i data-lucide="check" class="w-4 h-4"></i></button>` : ''}
-                            <button onclick="event.stopPropagation(); window.showMobileMenu(${n.id}, event, ${isTrashView})" class="text-white/40 hover:text-blue-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md md:hidden"><i data-lucide="more-vertical" class="w-4 h-4"></i></button>
-                        </div>
-                    </div>
-                    <h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-sm">${n.title || 'Ghi chú trống'}</h3>
-                    <p class="text-slate-300/90 text-sm line-clamp-6 leading-relaxed whitespace-pre-wrap">${n.content || '...'}</p>
+                    <div class="flex justify-between items-start mb-4"><span class="text-[9px] font-black uppercase tracking-widest bg-white/10 border border-white/5 text-white px-3 py-1.5 rounded-full shadow-inner">${n.tag}</span><div class="flex gap-2 relative z-10">${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/40 hover:text-green-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md"><i data-lucide="check" class="w-4 h-4"></i></button>` : ''}<button onclick="event.stopPropagation(); window.showMobileMenu(${n.id}, event, ${isTrashView})" class="text-white/40 hover:text-blue-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md md:hidden"><i data-lucide="more-vertical" class="w-4 h-4"></i></button></div></div>
+                    <h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-sm">${highlight(n.title) || 'Trống'}</h3>
+                    <p class="text-slate-300/90 text-sm line-clamp-6 leading-relaxed whitespace-pre-wrap">${highlight(n.content) || '...'}</p>
                 `;
 
                 let lastClick = 0;
                 div.onclick = (e) => {
-                    const currentTime = new Date().getTime();
-                    if (currentTime - lastClick < 400) { 
-                        if(!isTrashView) { selectedNoteId = n.id; window.openNoteEditModal(); }
-                    }
-                    lastClick = currentTime;
+                    const ct = new Date().getTime(); if (ct - lastClick < 400 && !isTrashView) { selectedNoteId = n.id; window.openNoteEditModal(); } lastClick = ct;
                 };
-
                 div.oncontextmenu = (e) => { e.preventDefault(); selectedNoteId = n.id; showMenu(isTrashView ? 'trashActions' : 'noteActions', e); };
                 grid.appendChild(div);
             });
@@ -626,44 +615,43 @@
         window.toggleNoteTrashView = function() { isTrashView = !isTrashView; document.getElementById('noteSearchInput').value = ""; renderNotes(); }
         window.saveNote = function() {
             const title = document.getElementById('nTitle').value.trim(), content = document.getElementById('nContent').value.trim(), tag = document.getElementById('nTag').value;
-            if(!title && !content) return;
-            if(selectedNoteId) {
-                const n = currentUserData.notes.find(x => x.id === selectedNoteId);
-                if(n) Object.assign(n, { title, content, tag, color: selectedNoteColor });
-            } else { currentUserData.notes.push({ id: Date.now(), title, content, tag, color: selectedNoteColor }); }
+            if(!title && !content) return showToast("Ghi chú trống!", "error");
+            if(selectedNoteId) { const n = currentUserData.notes.find(x => x.id === selectedNoteId); if(n) Object.assign(n, { title, content, tag, color: selectedNoteColor }); showToast("Đã cập nhật", "success"); } 
+            else { currentUserData.notes.push({ id: Date.now(), title, content, tag, color: selectedNoteColor }); showToast("Đã lưu ghi chú", "success"); }
             window.closeNoteModal(); renderNotes(); syncToCloud();
         }
         window.fastComplete = function(id) {
             const idx = currentUserData.notes.findIndex(n => n.id === id);
-            if(idx > -1) { currentUserData.trash.unshift(currentUserData.notes.splice(idx, 1)[0]); if(currentUserData.trash.length > 100) currentUserData.trash.pop(); renderNotes(); syncToCloud(); }
+            if(idx > -1) { currentUserData.trash.unshift(currentUserData.notes.splice(idx, 1)[0]); if(currentUserData.trash.length > 100) currentUserData.trash.pop(); renderNotes(); syncToCloud(); showToast("Đã chuyển vào thùng rác"); }
         }
         window.completeNote = function() { window.fastComplete(selectedNoteId); hideMenus(); }
-        window.restoreNote = function() { const idx = currentUserData.trash.findIndex(n => n.id === selectedNoteId); if(idx > -1) { currentUserData.notes.unshift(currentUserData.trash.splice(idx, 1)[0]); renderNotes(); hideMenus(); syncToCloud(); } }
-        window.permanentlyDeleteNote = function() { if(confirm("XÓA VĨNH VIỄN?")) { currentUserData.trash = currentUserData.trash.filter(n => n.id !== selectedNoteId); renderNotes(); hideMenus(); syncToCloud(); } }
-        window.clearFullTrash = function() { if(confirm("Dọn sạch rác?")) { currentUserData.trash = []; renderNotes(); syncToCloud(); } }
-        window.setNoteColor = function(color) { selectedNoteColor = color; document.querySelectorAll('#noteModal .color-dot').forEach(dot => dot.classList.toggle('active', dot.dataset.color === color)); }
-        window.openNoteEditModal = function() {
-            if(isRecordingNote && recognition) recognition.stop();
-            const n = currentUserData.notes.find(x => x.id === selectedNoteId); if(!n) return;
-            document.getElementById('noteModalTitle').innerText = "Chỉnh sửa tài liệu";
-            document.getElementById('nTitle').value = n.title; document.getElementById('nContent').value = n.content; document.getElementById('nTag').value = n.tag;
-            window.setNoteColor(n.color || 'rgba(15, 23, 42, 0.45)'); document.getElementById('noteModal').classList.remove('hidden'); hideMenus();
-        }
-        window.openNoteAddModal = function() {
-            if(isRecordingNote && recognition) recognition.stop();
-            selectedNoteId = null; document.getElementById('noteModalTitle').innerText = "Tạo mới tài liệu";
-            document.getElementById('nTitle').value = ''; document.getElementById('nContent').value = '';
-            window.setNoteColor('rgba(15, 23, 42, 0.45)'); document.getElementById('noteModal').classList.remove('hidden'); hideMenus();
-        }
-        window.openNoteCatManager = function() {
-            document.getElementById('noteCatModal').classList.remove('hidden');
-            document.getElementById('noteCatListDisplay').innerHTML = currentUserData.noteCats.filter(c => c !== "Tất cả").map(c => `<div class="flex justify-between items-center bg-black/20 border border-white/5 p-4 rounded-xl mb-3"><span class="font-bold text-sm text-slate-200">${c}</span><button onclick="window.deleteNoteCat('${c}')" class="text-red-500 hover:bg-red-500/20 p-2 rounded-lg transition-all"><i data-lucide="trash" class="w-4 h-4"></i></button></div>`).join('');
-            lucide.createIcons(); hideMenus();
-        }
-        window.addNoteCat = function() { const v = document.getElementById('newNoteCatInp').value.trim(); if(v && !currentUserData.noteCats.includes(v)) { currentUserData.noteCats.push(v); document.getElementById('newNoteCatInp').value = ''; window.openNoteCatManager(); renderNotes(); syncToCloud(); } }
-        window.deleteNoteCat = function(c) { currentUserData.noteCats = currentUserData.noteCats.filter(i => i !== c); currentUserData.notes.forEach(n => { if(n.tag === c) n.tag = "Tất cả"; }); window.openNoteCatManager(); renderNotes(); syncToCloud(); }
-        window.closeNoteModal = function() { if(isRecordingNote && recognition) recognition.stop(); document.getElementById('noteModal').classList.add('hidden'); }
+        window.restoreNote = function() { const idx = currentUserData.trash.findIndex(n => n.id === selectedNoteId); if(idx > -1) { currentUserData.notes.unshift(currentUserData.trash.splice(idx, 1)[0]); renderNotes(); hideMenus(); syncToCloud(); showToast("Đã khôi phục"); } }
         
+        // DÙNG CUSTOM CONFIRM
+        window.permanentlyDeleteNote = function() { 
+            showConfirmDialog("Xóa vĩnh viễn?", "Ghi chú này sẽ bị xóa khỏi thùng rác và không thể khôi phục.", () => {
+                currentUserData.trash = currentUserData.trash.filter(n => n.id !== selectedNoteId); renderNotes(); hideMenus(); syncToCloud(); showToast("Đã xóa vĩnh viễn");
+            });
+        }
+        window.clearFullTrash = function() { 
+            showConfirmDialog("Dọn sạch thùng rác?", "Toàn bộ ghi chú trong thùng rác sẽ bị xóa vĩnh viễn.", () => {
+                currentUserData.trash = []; renderNotes(); syncToCloud(); showToast("Thùng rác đã được làm sạch");
+            });
+        }
+
+        window.setNoteColor = function(color) { selectedNoteColor = color; document.querySelectorAll('#noteModal .color-dot').forEach(dot => dot.classList.toggle('active', dot.dataset.color === color)); }
+        window.openNoteEditModal = function() { if(isRecordingNote && recognition) recognition.stop(); const n = currentUserData.notes.find(x => x.id === selectedNoteId); if(!n) return; document.getElementById('noteModalTitle').innerText = "Chỉnh sửa tài liệu"; document.getElementById('nTitle').value = n.title; document.getElementById('nContent').value = n.content; document.getElementById('nTag').value = n.tag; window.setNoteColor(n.color || 'rgba(15, 23, 42, 0.45)'); document.getElementById('noteModal').classList.remove('hidden'); hideMenus(); }
+        window.openNoteAddModal = function() { if(isRecordingNote && recognition) recognition.stop(); selectedNoteId = null; document.getElementById('noteModalTitle').innerText = "Tạo mới tài liệu"; document.getElementById('nTitle').value = ''; document.getElementById('nContent').value = ''; window.setNoteColor('rgba(15, 23, 42, 0.45)'); document.getElementById('noteModal').classList.remove('hidden'); hideMenus(); }
+        window.openNoteCatManager = function() { document.getElementById('noteCatModal').classList.remove('hidden'); document.getElementById('noteCatListDisplay').innerHTML = currentUserData.noteCats.filter(c => c !== "Tất cả").map(c => `<div class="flex justify-between items-center bg-black/20 border border-white/5 p-4 rounded-xl mb-3"><span class="font-bold text-sm text-slate-200">${c}</span><button onclick="window.deleteNoteCat('${c}')" class="text-red-500 hover:bg-red-500/20 p-2 rounded-lg transition-all"><i data-lucide="trash" class="w-4 h-4"></i></button></div>`).join(''); lucide.createIcons(); hideMenus(); }
+        window.addNoteCat = function() { const v = document.getElementById('newNoteCatInp').value.trim(); if(v && !currentUserData.noteCats.includes(v)) { currentUserData.noteCats.push(v); document.getElementById('newNoteCatInp').value = ''; window.openNoteCatManager(); renderNotes(); syncToCloud(); showToast("Đã thêm danh mục"); } }
+        
+        window.deleteNoteCat = function(c) { 
+            showConfirmDialog("Xóa phân loại?", `Ghi chú thuộc loại "${c}" sẽ được chuyển thành "Tất cả".`, () => {
+                currentUserData.noteCats = currentUserData.noteCats.filter(i => i !== c); currentUserData.notes.forEach(n => { if(n.tag === c) n.tag = "Tất cả"; }); window.openNoteCatManager(); renderNotes(); syncToCloud(); showToast("Đã xóa");
+            });
+        }
+        
+        window.closeNoteModal = function() { if(isRecordingNote && recognition) recognition.stop(); document.getElementById('noteModal').classList.add('hidden'); }
         window.showMobileMenu = function(id, event, isTrash) { selectedNoteId = id; showMenu(isTrash ? 'trashActions' : 'noteActions', event); };
         function showMenu(m, e) {
             hideMenus(); const menu = document.getElementById('ctxMenu'); menu.style.display = 'block'; 
@@ -679,12 +667,15 @@
         function hideMenus() { document.getElementById('ctxMenu').style.display = 'none'; }
         window.handleContextMenu = function(e) { e.preventDefault(); if(currentTab==='notes' && !e.target.closest('.bento-card')) showMenu('globalActions', e); }
 
+        // ==========================================
+        // 6. LOGIC FINANCE OS
+        // ==========================================
         function getFinData() { return currentUserData.finance.transactions; }
         function getFinMembers() { return currentUserData.finance.members; }
         function getFinCats() { return currentUserData.finance.categories; }
 
         function startFinVoiceTyping() {
-            if(!recognition) return alert('Trình duyệt không hỗ trợ nhận diện giọng nói!');
+            if(!recognition) return showToast("Trình duyệt không hỗ trợ Voice", "error");
             if(isRecordingFin) { recognition.stop(); return; }
             isRecordingFin = true;
             const btn = document.getElementById('finBtnVoice');
@@ -708,6 +699,7 @@
             setFinType(matchedType); document.getElementById('finInpCategory').value = matchedCatId;
             if(amount > 0) document.getElementById('finInpAmount').value = amount.toLocaleString('vi-VN');
             document.getElementById('finInpNote').value = text.charAt(0).toUpperCase() + text.slice(1);
+            showToast("Đã phân tích giọng nói", "success");
         }
 
         function changeFinMonth(step) { finViewDate.setMonth(finViewDate.getMonth() + step); renderFinanceDashboard(); }
@@ -729,7 +721,7 @@
             document.getElementById('finMemberStatsGrid').innerHTML = mems.map((m, i) => {
                 const spent = stats[m] || 0; const pct = totalMonthlyOut === 0 ? 0 : Math.round((spent / totalMonthlyOut) * 100);
                 const colors = ['bg-purple-500', 'bg-blue-500', 'bg-emerald-500', 'bg-pink-500', 'bg-orange-500'];
-                return `<div class="bg-black/20 p-4 rounded-2xl border border-white/5"><div class="flex justify-between items-end mb-3"><span class="font-bold text-slate-200">${m}</span><div class="text-right"><span class="text-white font-black block text-lg">${formatVND(spent)}</span><span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Chiếm ${pct}%</span></div></div><div class="w-full bg-black/40 rounded-full h-2.5 shadow-inner"><div class="${colors[i % colors.length]} h-2.5 rounded-full shadow-md" style="width: ${pct}%"></div></div></div>`;
+                return `<div class="bg-black/20 p-4 rounded-2xl border border-white/5"><div class="flex justify-between items-end mb-3"><span class="font-bold text-slate-200">${m}</span><div class="text-right"><span class="text-white font-black block text-lg">${formatVND(spent)}</span><span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Chiếm ${pct}%</span></div></div><div class="w-full bg-black/40 rounded-full h-2.5 shadow-inner"><div class="${colors[i % colors.length]} h-2.5 rounded-full shadow-md transition-all duration-1000" style="width: ${pct}%"></div></div></div>`;
             }).join('');
         }
 
@@ -783,21 +775,37 @@
         function popFinMembers() { document.getElementById('finInpMember').innerHTML = getFinMembers().map(m => `<option value="${m}">${m}</option>`).join(''); }
 
         function saveFinTransaction(e) {
-            e.preventDefault(); const amount = parseInt(document.getElementById('finInpAmount').value.replace(/\D/g, '')); if(isNaN(amount) || amount <= 0) return alert("Số tiền không hợp lệ!");
+            e.preventDefault(); const amount = parseInt(document.getElementById('finInpAmount').value.replace(/\D/g, '')); if(isNaN(amount) || amount <= 0) return showToast("Số tiền không hợp lệ!", "error");
             const tx = { type: currentFinType, amount, categoryId: document.getElementById('finInpCategory').value, member: document.getElementById('finInpMember').value, date: document.getElementById('finInpDate').value, note: document.getElementById('finInpNote').value.trim() };
-            if (editingFinId) { const i = getFinData().findIndex(t => t.id === editingFinId); if(i > -1) currentUserData.finance.transactions[i] = { ...currentUserData.finance.transactions[i], ...tx }; } else { tx.id = Date.now().toString(); currentUserData.finance.transactions.push(tx); }
+            if (editingFinId) { const i = getFinData().findIndex(t => t.id === editingFinId); if(i > -1) currentUserData.finance.transactions[i] = { ...currentUserData.finance.transactions[i], ...tx }; showToast("Đã cập nhật", "success"); } 
+            else { tx.id = Date.now().toString(); currentUserData.finance.transactions.push(tx); showToast("Đã lưu giao dịch", "success"); }
             closeFinModal('finTransactionModal'); renderFinanceDashboard(); syncToCloud();
         }
 
-        function deleteSingleFinTransaction() { if(editingFinId && confirm("Xóa giao dịch này?")) { currentUserData.finance.transactions = currentUserData.finance.transactions.filter(t => t.id !== editingFinId); closeFinModal('finTransactionModal'); renderFinanceDashboard(); syncToCloud(); } }
+        function deleteSingleFinTransaction() { 
+            showConfirmDialog("Xóa giao dịch này?", "Hành động này sẽ ảnh hưởng đến biểu đồ tháng.", () => {
+                currentUserData.finance.transactions = currentUserData.finance.transactions.filter(t => t.id !== editingFinId); closeFinModal('finTransactionModal'); renderFinanceDashboard(); syncToCloud(); showToast("Đã xóa giao dịch");
+            });
+        }
 
         function openFinCatManager() { document.getElementById('finCatModal').classList.remove('hidden'); switchFinCatTab(currentFinType); document.getElementById('newFinCatColor').value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'); }
         function switchFinCatTab(type) { currentFinCatTab = type; document.getElementById('finBtnCatExpTab').className = `flex-1 py-2.5 rounded-xl text-sm font-bold transition-all ${type==='expense'?'bg-red-500 text-white shadow-md':'bg-black/20 text-slate-400 hover:text-white'}`; document.getElementById('finBtnCatIncTab').className = `flex-1 py-2.5 rounded-xl text-sm font-bold transition-all ${type==='income'?'bg-emerald-500 text-white shadow-md':'bg-black/20 text-slate-400 hover:text-white'}`; renderFinCatList(); }
         function renderFinCatList() { const html = getFinCats()[currentFinCatTab].map(c => `<div class="flex justify-between items-center p-3 bg-black/20 border border-white/5 rounded-xl"><div class="flex items-center gap-3"><div class="p-2 rounded-lg flex-shrink-0" style="background-color: ${c.color}20; color: ${c.color}"><i data-lucide="${c.icon}" class="w-4 h-4"></i></div><span class="text-white font-bold text-sm">${c.name}</span></div><button onclick="deleteFinCat('${c.id}')" class="text-slate-500 hover:text-red-500 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join(''); document.getElementById('finCatListDisplay').innerHTML = html; lucide.createIcons(); }
         function addFinCategory() { const name = document.getElementById('newFinCatName').value.trim(); if (!name) return; currentUserData.finance.categories[currentFinCatTab].push({ id: 'cat_' + Date.now(), icon: 'tag', name: name, color: document.getElementById('newFinCatColor').value }); document.getElementById('newFinCatName').value = ''; document.getElementById('newFinCatColor').value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'); renderFinCatList(); setFinType(currentFinType); syncToCloud(); }
-        function deleteFinCat(id) { if (getFinCats()[currentFinCatTab].length <= 1) return alert("Giữ lại ít nhất 1!"); if (confirm("Xóa danh mục này?")) { currentUserData.finance.categories[currentFinCatTab] = currentUserData.finance.categories[currentFinCatTab].filter(c => c.id !== id); renderFinCatList(); setFinType(currentFinType); syncToCloud(); } }
+        function deleteFinCat(id) { 
+            if (getFinCats()[currentFinCatTab].length <= 1) return showToast("Phải giữ lại ít nhất 1 danh mục!", "error"); 
+            showConfirmDialog("Xóa danh mục?", "Các giao dịch cũ sẽ được đánh dấu là 'Khác'.", () => {
+                currentUserData.finance.categories[currentFinCatTab] = currentUserData.finance.categories[currentFinCatTab].filter(c => c.id !== id); renderFinCatList(); setFinType(currentFinType); syncToCloud(); showToast("Đã xóa danh mục");
+            });
+        }
 
-        function addFinMember() { const n = prompt('Tên người mới:'); if (n && n.trim() && !getFinMembers().includes(n.trim())) { currentUserData.finance.members.push(n.trim()); renderFinanceDashboard(); syncToCloud(); } }
+        function addFinMember() { 
+            const n = prompt('Nhập tên người mới:'); 
+            if (n && n.trim()) {
+                if(!getFinMembers().includes(n.trim())) { currentUserData.finance.members.push(n.trim()); renderFinanceDashboard(); syncToCloud(); showToast("Đã thêm người chi trả"); }
+                else { showToast("Tên này đã tồn tại!", "error"); }
+            }
+        }
         
         function openFinSearchModal() { document.getElementById('finSearchModal').classList.remove('hidden'); const cats = getFinCats(); document.getElementById('finSearchCat').innerHTML = '<option value="all">Danh mục: Mọi</option>' + cats.expense.concat(cats.income).map(c => `<option value="${c.id}">${c.name}</option>`).join(''); document.getElementById('finSearchMem').innerHTML = '<option value="all">Người chi: Mọi</option>' + getFinMembers().map(m => `<option value="${m}">${m}</option>`).join(''); resetFinSearch(); }
         function resetFinSearch() { document.getElementById('finSearchInput').value = ''; document.getElementById('finSearchType').value = 'all'; document.getElementById('finSearchCat').value = 'all'; document.getElementById('finSearchMem').value = 'all'; executeFinSearch(); }
@@ -824,6 +832,3 @@
     </script>
 </body>
 </html>
-
-
-
