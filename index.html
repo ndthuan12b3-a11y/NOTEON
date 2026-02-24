@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Workspace Pro </title>
+    <title>WorkSpace</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -180,7 +180,7 @@
             <h2 class="text-3xl font-black mb-2 uppercase tracking-widest text-white drop-shadow-lg">WORKSPACE</h2>
             <p class="text-slate-400 text-sm mb-8 font-medium">Nhập mã bất kỳ và nhớ mã của bạn để đăng nhập...</p>
             <input type="password" id="accessKey" onkeypress="if(event.key === 'Enter') unlockApp()" placeholder="••••••••" class="glass-input w-full rounded-2xl py-4 px-6 mb-6 text-center tracking-[0.5em] text-lg focus:border-blue-500 transition-all shadow-inner">
-            <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2 text-lg"><span>ĐĂNG NHẬP / TẠO MỚI</span></button>
+            <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2 text-lg"><span>ĐĂNG NHẬP</span></button>
         </div>
     </div>
 
@@ -195,7 +195,7 @@
             <div class="flex gap-3 w-full lg:w-auto items-center">
                 <div class="flex glass-card p-1.5 rounded-2xl flex-1 lg:flex-none">
                     <button onclick="switchAppTab('notes')" id="tabBtnNotes" class="flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all bg-blue-500/90 text-white shadow-lg flex items-center justify-center gap-2"><i data-lucide="edit-3" class="w-4 h-4"></i> GHI CHÚ</button>
-                    <button onclick="switchAppTab('finance')" id="tabBtnFinance" class="flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2 bg-transparent"><i data-lucide="wallet" class="w-4 h-4"></i> CHI TIÊU</button>
+                    <button onclick="switchAppTab('finance')" id="tabBtnFinance" class="flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2 bg-transparent"><i data-lucide="wallet" class="w-4 h-4"></i>QUẢN LÝ CHI TIÊU</button>
                 </div>
                 <button onclick="openSettingsModal()" class="glass-card p-4 rounded-2xl hover:bg-blue-500/20 hover:text-blue-400 hover:border-blue-500/50 transition-all shadow-lg active:scale-90 flex-shrink-0" title="Cài đặt hệ thống"><i data-lucide="settings" class="w-5 h-5"></i></button>
                 <button onclick="lockAgain()" class="glass-card p-4 rounded-2xl hover:bg-red-500/20 hover:text-red-400 hover:border-red-500/50 transition-all shadow-lg active:scale-90 flex-shrink-0" title="Khóa ứng dụng"><i data-lucide="lock" class="w-5 h-5"></i></button>
@@ -503,11 +503,11 @@
             </div>
             <div class="grid grid-cols-2 gap-4 mb-6">
                 <div class="bg-green-500/10 border border-green-500/30 rounded-2xl p-4 text-center">
-                    <p class="text-[10px] md:text-xs font-bold text-green-500 uppercase tracking-widest mb-1">NGƯỜI TA NỢ MÌNH</p>
+                    <p class="text-[10px] md:text-xs font-bold text-green-500 uppercase tracking-widest mb-1">Tổng người nợ mình</p>
                     <h3 id="totalLend" class="text-xl md:text-2xl font-black text-white drop-shadow">0đ</h3>
                 </div>
                 <div class="bg-red-500/10 border border-red-500/30 rounded-2xl p-4 text-center">
-                    <p class="text-[10px] md:text-xs font-bold text-red-500 uppercase tracking-widest mb-1">MÌNH NỢ NGƯỜI TA</p>
+                    <p class="text-[10px] md:text-xs font-bold text-red-500 uppercase tracking-widest mb-1">Tổng mình nợ & trả góp</p>
                     <h3 id="totalBorrow" class="text-xl md:text-2xl font-black text-white drop-shadow">0đ</h3>
                 </div>
             </div>
@@ -838,7 +838,7 @@
                     localStorage.removeItem("ws_data_" + currentKey);
                     
                     currentKey = newKey;
-                    document.getElementById('keyLabel').innerText = `Key: ${currentKey}`;
+                    document.getElementById('keyLabel').innerText = "Đã kết nối";
                     showToast("Đã đổi mã khóa thành công!", "success");
                     document.getElementById('setInpNewKey').value = '';
                     btn.innerHTML = "CẬP NHẬT MÃ KHÓA";
@@ -925,7 +925,7 @@
                 if(error) throw error;
                 
                 document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-green-400 shadow-[0_0_10px_#4ade80]"; 
-                document.getElementById('keyLabel').innerText = `Key: ${currentKey}`; 
+                document.getElementById('keyLabel').innerText = "Đã đồng bộ"; 
             } catch (error) { 
                 document.getElementById('statusDot').className = "w-2.5 h-2.5 rounded-full bg-slate-500 shadow-none"; 
                 document.getElementById('keyLabel').innerText = "Đã lưu Offline"; 
@@ -992,7 +992,7 @@
                 
                 document.getElementById('lockScreen').classList.add('opacity-0', 'invisible'); 
                 document.getElementById('mainApp').classList.remove('blur-screen'); 
-                document.getElementById('keyLabel').innerText = `Key: ${currentKey}`; 
+                document.getElementById('keyLabel').innerText = "Đã kết nối"; 
                 applyCSS(); initVoiceAPI(); switchAppTab('notes'); resetIdleTimer(); 
                 showToast(data ? "Đăng nhập thành công!" : "Tạo Workspace thành công!", "success");
                 
@@ -1087,7 +1087,7 @@
             const filterBar = document.getElementById('filterBar'); filterBar.innerHTML = ''; currentUserData.noteCats.forEach(c => { const btn = document.createElement('button'); btn.className = `px-5 py-2 rounded-full text-sm font-bold border transition-all whitespace-nowrap flex-shrink-0 ${currentNoteFilter === c ? 'tag-active border-transparent' : 'glass-card text-slate-300 hover:text-white hover:border-white/20'}`; btn.innerText = c; btn.onclick = () => { currentNoteFilter = c; isTrashView = false; renderNotes(); }; filterBar.appendChild(btn); });
             document.getElementById('nTag').innerHTML = currentUserData.noteCats.filter(c => c !== "Tất cả").map(c => `<option value="${c}">${c}</option>`).join('');
             grid.innerHTML = ''; let dataSource = isTrashView ? currentUserData.trash : currentUserData.notes; const filtered = dataSource.filter(n => (currentNoteFilter === "Tất cả" || n.tag === currentNoteFilter) && (n.title.toLowerCase().includes(search) || n.content.toLowerCase().includes(search))).sort((a,b) => b.id - a.id);
-            if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-white/10 text-slate-500'} rounded-[2rem] p-10 text-center font-bold">Chưa có ghi chú nào...</div>`;
+            if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-white/10 text-slate-500'} rounded-[2rem] p-10 text-center font-bold">Chưa có ghi chú...</div>`;
             filtered.forEach(n => { const div = document.createElement('div'); div.className = `bento-card p-5 md:p-6 rounded-[2rem] relative`; if(!isTrashView) div.style.background = (n.color || 'rgba(15, 23, 42, 0.45)'); const highlight = (text) => { if(!search) return text; const regex = new RegExp(`(${search})`, 'gi'); return text.replace(regex, '<mark class="bg-blue-500/50 text-white rounded px-1">$1</mark>'); }; div.innerHTML = `<div class="flex justify-between items-start mb-4"><span class="text-[9px] font-black uppercase tracking-widest bg-white/10 border border-white/5 text-white px-3 py-1.5 rounded-full shadow-inner">${n.tag}</span><div class="flex gap-2 relative z-10">${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/40 hover:text-green-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md"><i data-lucide="check" class="w-4 h-4"></i></button>` : ''}<button onclick="event.stopPropagation(); window.showMobileMenu(${n.id}, event, ${isTrashView})" class="text-white/40 hover:text-blue-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md md:hidden"><i data-lucide="more-vertical" class="w-4 h-4"></i></button></div></div><h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-sm">${highlight(n.title) || 'Trống'}</h3><p class="text-slate-300/90 text-sm line-clamp-6 leading-relaxed whitespace-pre-wrap">${highlight(n.content) || '...'}</p>`; let lastClick = 0; div.onclick = (e) => { const ct = new Date().getTime(); if (ct - lastClick < 400 && !isTrashView) { selectedNoteId = n.id; window.openNoteEditModal(); } lastClick = ct; }; div.oncontextmenu = (e) => { e.preventDefault(); selectedNoteId = n.id; showMenu(isTrashView ? 'trashActions' : 'noteActions', e); }; grid.appendChild(div); }); renderIcons();
         }
         window.toggleNoteTrashView = function() { isTrashView = !isTrashView; document.getElementById('noteSearchInput').value = ""; renderNotes(); }
@@ -1512,7 +1512,7 @@
             const person = document.getElementById('inpDebtPerson').value.trim();
             const amount = parseInt(document.getElementById('inpDebtAmount').value.replace(/\D/g, ''));
             const date = document.getElementById('inpDebtDate').value; 
-            const note = document.getElementById('inpDebtNote').value.trim();
+            const note = document.getElementById('inpDebtNote').value.trim(); 
             
             if(!person || isNaN(amount) || amount <= 0) return showToast("Nhập sai thông tin!", "error"); 
             let months = 0; let rate = 0; let totalToPay = amount; 
@@ -1531,7 +1531,7 @@
                     d.originalAmount = amount; 
                     d.interestRate = rate; 
                     d.date = date; 
-                    d.note = note;
+                    d.note = note; 
                     d.isInstallment = isDebtInstallment; 
                     d.months = months; 
                     d.type = debtType; 
