@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>WorkSpace </title>
+    <title>Workspace Pro </title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -180,7 +180,7 @@
             <h2 class="text-3xl font-black mb-2 uppercase tracking-widest text-white drop-shadow-lg">WORKSPACE</h2>
             <p class="text-slate-400 text-sm mb-8 font-medium">Nhập mã bất kỳ và nhớ mã của bạn để đăng nhập...</p>
             <input type="password" id="accessKey" onkeypress="if(event.key === 'Enter') unlockApp()" placeholder="••••••••" class="glass-input w-full rounded-2xl py-4 px-6 mb-6 text-center tracking-[0.5em] text-lg focus:border-blue-500 transition-all shadow-inner">
-            <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2 text-lg"><span>ĐĂNG NHẬP</span></button>
+            <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2 text-lg"><span>ĐĂNG NHẬP / TẠO MỚI</span></button>
         </div>
     </div>
 
@@ -214,7 +214,7 @@
             </div>
 
             <div id="noteAddBtnContainer" class="fixed bottom-8 left-0 right-0 flex justify-center z-40 pointer-events-none transition-all duration-300">
-                <button onclick="window.openNoteAddModal()" class="pointer-events-auto bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 px-8 rounded-full shadow-[0_10px_40px_rgba(59,130,246,0.4)] hover:shadow-[0_10px_50px_rgba(59,130,246,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 font-black tracking-wide text-base border border-blue-400/30"><i data-lucide="plus" class="w-6 h-6"></i> </button>
+                <button onclick="window.openNoteAddModal()" class="pointer-events-auto bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 px-8 rounded-full shadow-[0_10px_40px_rgba(59,130,246,0.4)] hover:shadow-[0_10px_50px_rgba(59,130,246,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 font-black tracking-wide text-base border border-blue-400/30"><i data-lucide="plus" class="w-6 h-6"></i> THÊM GHI CHÚ</button>
             </div>
             <div id="noteFloatingControls" class="fixed bottom-8 right-6 md:bottom-10 md:right-10 flex flex-col gap-4 items-end z-40">
                 <button id="clearTrashBtn" style="display:none" onclick="window.clearFullTrash()" class="bg-red-600/90 backdrop-blur-md text-white border border-red-400 px-6 py-3 rounded-2xl text-xs font-black hover:bg-red-500 transition-all shadow-[0_0_30px_rgba(239,68,68,0.4)] active:scale-95 tracking-widest">DỌN RÁC</button>
@@ -291,7 +291,7 @@
 
             <div class="fixed bottom-8 left-0 right-0 flex justify-center z-40 pointer-events-none">
                 <button onclick="openFinAddModal()" class="pointer-events-auto bg-gradient-to-r from-emerald-500 to-cyan-500 text-white p-4 px-8 rounded-full shadow-[0_10px_40px_rgba(16,185,129,0.4)] hover:shadow-[0_10px_50px_rgba(16,185,129,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 font-black tracking-wide text-base border border-emerald-400/30">
-                    <i data-lucide="plus" class="w-6 h-6"></i> 
+                    <i data-lucide="plus" class="w-6 h-6"></i> THÊM GIAO DỊCH
                 </button>
             </div>
         </div>
@@ -518,7 +518,7 @@
     <div id="debtFormModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[6001] hidden flex items-center justify-center p-4">
         <div class="bg-slate-900 border border-blue-500/30 w-full max-w-md rounded-[2.5rem] p-6 shadow-2xl relative modal-enter">
             <button onclick="closeFinModal('debtFormModal')" class="absolute top-6 right-6 text-slate-400 bg-black/20 p-2 rounded-full hover:text-white transition-colors"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h2 id="debtModalTitle" class="text-xl font-bold mb-6 text-white">Thêm khoản Nợ</h2>
+            <h2 id="debtModalTitle" class="text-xl font-bold mb-6 text-white">Thêm khoản Nợ/Trả góp</h2>
             <div class="flex p-1 bg-black/30 border border-white/5 rounded-2xl mb-4">
                 <button id="btnDebtLend" type="button" onclick="setDebtType('lend')" class="flex-1 py-2.5 rounded-xl text-sm font-bold bg-green-600 text-white shadow-md transition-all">CHO VAY</button>
                 <button id="btnDebtBorrow" type="button" onclick="setDebtType('borrow')" class="flex-1 py-2.5 rounded-xl text-sm font-bold text-slate-400 hover:text-white transition-all">ĐI VAY/TRẢ GÓP</button>
@@ -1087,8 +1087,8 @@
             const filterBar = document.getElementById('filterBar'); filterBar.innerHTML = ''; currentUserData.noteCats.forEach(c => { const btn = document.createElement('button'); btn.className = `px-5 py-2 rounded-full text-sm font-bold border transition-all whitespace-nowrap flex-shrink-0 ${currentNoteFilter === c ? 'tag-active border-transparent' : 'glass-card text-slate-300 hover:text-white hover:border-white/20'}`; btn.innerText = c; btn.onclick = () => { currentNoteFilter = c; isTrashView = false; renderNotes(); }; filterBar.appendChild(btn); });
             document.getElementById('nTag').innerHTML = currentUserData.noteCats.filter(c => c !== "Tất cả").map(c => `<option value="${c}">${c}</option>`).join('');
             grid.innerHTML = ''; let dataSource = isTrashView ? currentUserData.trash : currentUserData.notes; const filtered = dataSource.filter(n => (currentNoteFilter === "Tất cả" || n.tag === currentNoteFilter) && (n.title.toLowerCase().includes(search) || n.content.toLowerCase().includes(search))).sort((a,b) => b.id - a.id);
-            if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-white/10 text-slate-500'} rounded-[2rem] p-10 text-center font-bold">Chưa Có Ghi Chú...</div>`;
-            filtered.forEach(n => { const div = document.createElement('div'); div.className = `bento-card p-5 md:p-6 rounded-[2rem] relative`; if(!isTrashView) div.style.background = (n.color || 'rgba(15, 23, 42, 0.45)'); const highlight = (text) => { if(!search) return text; const regex = new RegExp(`(${search})`, 'gi'); return text.replace(regex, '<mark class="bg-blue-500/50 text-white rounded px-1">$1</mark>'); }; div.innerHTML = `<div class="flex justify-between items-start mb-4"><span class="text-[9px] font-black uppercase tracking-widest bg-white/10 border border-white/5 text-white px-3 py-1.5 rounded-full shadow-inner">${n.tag}</span><div class="flex gap-2 relative z-10">${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/40 hover:text-green-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md"><i data-lucide="check" class="w-4 h-4"></i></button>` : ''}<button onclick="event.stopPropagation(); window.showMobileMenu(${n.id}, event, ${isTrashView})" class="text-white/40 hover:text-blue-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md md:hidden"><i data-lucide="more-vertical" class="w-4 h-4"></i></button></div></div><h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-sm">${highlight(n.title) || 'Chưa có giao dịch'}</h3><p class="text-slate-300/90 text-sm line-clamp-6 leading-relaxed whitespace-pre-wrap">${highlight(n.content) || '...'}</p>`; let lastClick = 0; div.onclick = (e) => { const ct = new Date().getTime(); if (ct - lastClick < 400 && !isTrashView) { selectedNoteId = n.id; window.openNoteEditModal(); } lastClick = ct; }; div.oncontextmenu = (e) => { e.preventDefault(); selectedNoteId = n.id; showMenu(isTrashView ? 'trashActions' : 'noteActions', e); }; grid.appendChild(div); }); renderIcons();
+            if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-white/10 text-slate-500'} rounded-[2rem] p-10 text-center font-bold">Chưa có ghi chú nào...</div>`;
+            filtered.forEach(n => { const div = document.createElement('div'); div.className = `bento-card p-5 md:p-6 rounded-[2rem] relative`; if(!isTrashView) div.style.background = (n.color || 'rgba(15, 23, 42, 0.45)'); const highlight = (text) => { if(!search) return text; const regex = new RegExp(`(${search})`, 'gi'); return text.replace(regex, '<mark class="bg-blue-500/50 text-white rounded px-1">$1</mark>'); }; div.innerHTML = `<div class="flex justify-between items-start mb-4"><span class="text-[9px] font-black uppercase tracking-widest bg-white/10 border border-white/5 text-white px-3 py-1.5 rounded-full shadow-inner">${n.tag}</span><div class="flex gap-2 relative z-10">${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/40 hover:text-green-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md"><i data-lucide="check" class="w-4 h-4"></i></button>` : ''}<button onclick="event.stopPropagation(); window.showMobileMenu(${n.id}, event, ${isTrashView})" class="text-white/40 hover:text-blue-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md md:hidden"><i data-lucide="more-vertical" class="w-4 h-4"></i></button></div></div><h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-sm">${highlight(n.title) || 'Trống'}</h3><p class="text-slate-300/90 text-sm line-clamp-6 leading-relaxed whitespace-pre-wrap">${highlight(n.content) || '...'}</p>`; let lastClick = 0; div.onclick = (e) => { const ct = new Date().getTime(); if (ct - lastClick < 400 && !isTrashView) { selectedNoteId = n.id; window.openNoteEditModal(); } lastClick = ct; }; div.oncontextmenu = (e) => { e.preventDefault(); selectedNoteId = n.id; showMenu(isTrashView ? 'trashActions' : 'noteActions', e); }; grid.appendChild(div); }); renderIcons();
         }
         window.toggleNoteTrashView = function() { isTrashView = !isTrashView; document.getElementById('noteSearchInput').value = ""; renderNotes(); }
         window.saveNote = function() { const title = document.getElementById('nTitle').value.trim(), content = document.getElementById('nContent').value.trim(), tag = document.getElementById('nTag').value; if(!title && !content) return showToast("Ghi chú trống!", "error"); if(selectedNoteId) { const n = currentUserData.notes.find(x => x.id === selectedNoteId); if(n) Object.assign(n, { title, content, tag, color: selectedNoteColor }); showToast("Đã cập nhật", "success"); } else { currentUserData.notes.push({ id: Date.now(), title, content, tag, color: selectedNoteColor }); showToast("Đã lưu ghi chú", "success"); } window.closeNoteModal(); renderNotes(); syncToCloud(); }
@@ -1180,6 +1180,68 @@
             } catch(e) { console.error("Lỗi Render Dashboard:", e); }
         }
 
+        // Đã cập nhật chức năng quản lý người chi hoàn thiện
+        function openFinMemberManager() {
+            document.getElementById('finMemberModal').classList.remove('hidden');
+            renderFinMemberList();
+        }
+        function renderFinMemberList() {
+            const list = document.getElementById('finMemberListDisplay');
+            const mems = getFinMembers();
+            if(mems.length === 0) {
+                list.innerHTML = '<div class="text-slate-500 text-center py-6 text-sm border-2 border-dashed border-white/10 rounded-2xl">Danh sách người chi trống.<br>Hãy thêm người bên trên!</div>';
+            } else {
+                list.innerHTML = mems.map(m => `
+                    <div class="flex justify-between items-center bg-black/20 border border-white/5 p-3 rounded-xl mb-2 hover:border-white/10 transition-colors">
+                        <span class="font-bold text-sm text-slate-200">${m}</span>
+                        <div class="flex gap-1">
+                            <button type="button" onclick="editFinMember('${m}')" class="text-slate-500 hover:text-blue-400 p-2 rounded-lg transition-all"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <button type="button" onclick="deleteFinMember('${m}')" class="text-slate-500 hover:text-red-500 p-2 rounded-lg transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            renderIcons();
+        }
+        function addFinMember() {
+            const name = document.getElementById('newFinMemberName').value.trim();
+            if(!name) return showToast("Vui lòng nhập tên!", "error");
+            
+            // ÉP KHỞI TẠO NẾU DỮ LIỆU BỊ TRỐNG HOÀN TOÀN
+            if(!currentUserData.finance.members) currentUserData.finance.members = [];
+            
+            if(currentUserData.finance.members.includes(name)) return showToast("Tên này đã tồn tại!", "error");
+            currentUserData.finance.members.push(name);
+            document.getElementById('newFinMemberName').value = '';
+            renderFinMemberList(); renderFinanceDashboard(); syncToCloud();
+            showToast("Đã thêm người chi");
+        }
+        function editFinMember(oldName) {
+            if(!currentUserData.finance.members) currentUserData.finance.members = [];
+            const newName = prompt(`Sửa tên "${oldName}" thành:`, oldName);
+            if(newName && newName.trim() && newName.trim() !== oldName) {
+                const name = newName.trim();
+                if(currentUserData.finance.members.includes(name)) return showToast("Tên này đã tồn tại!", "error");
+                
+                const idx = currentUserData.finance.members.indexOf(oldName);
+                if(idx > -1) currentUserData.finance.members[idx] = name;
+                
+                currentUserData.finance.transactions.forEach(t => { if(t.member === oldName) t.member = name; });
+                currentUserData.finance.recurrings.forEach(r => { if(r.member === oldName) r.member = name; });
+                
+                renderFinMemberList(); renderFinanceDashboard(); syncToCloud();
+                showToast("Đã cập nhật tên");
+            }
+        }
+        function deleteFinMember(name) {
+            if(!currentUserData.finance.members) currentUserData.finance.members = [];
+            showConfirmDialog("Xóa người này?", "Các giao dịch cũ của họ vẫn sẽ được giữ lại, nhưng tên sẽ không hiển thị trong danh sách tạo mới nữa.", () => {
+                currentUserData.finance.members = currentUserData.finance.members.filter(m => m !== name);
+                renderFinMemberList(); renderFinanceDashboard(); syncToCloud();
+                showToast("Đã xóa khỏi danh sách");
+            });
+        }
+
         function renderFinMemberStats(monthlyData, totalMonthlyOut) {
             const stats = {}; 
             const activeMems = getFinMembers();
@@ -1215,7 +1277,7 @@
         function getCatInfo(type, catId) { try { return getFinCats()[type].find(c => c.id === catId) || { id: 'deleted', name: 'Khác', icon: 'help-circle', color: '#64748b' }; } catch(e) { return { id: 'error', name: 'Lỗi', icon: 'alert-circle', color: '#64748b'}; } }
         
         function renderFinTransactionList(monthlyData) {
-            const listEl = document.getElementById('finTransactionList'); if(monthlyData.length === 0) return listEl.innerHTML = '<div class="text-center text-slate-500 py-10 text-sm border-2 border-dashed border-white/10 rounded-2xl">Trống...</div>';
+            const listEl = document.getElementById('finTransactionList'); if(monthlyData.length === 0) return listEl.innerHTML = '<div class="text-center text-slate-500 py-10 text-sm border-2 border-dashed border-white/10 rounded-2xl">Chưa có lịch sử...</div>';
             listEl.innerHTML = [...monthlyData].sort((a, b) => new Date(b.date) - new Date(a.date)).map(t => {
                 const catInfo = getCatInfo(t.type, t.categoryId);
                 return `<div onclick="editFinTransaction('${t.id}')" class="flex items-center justify-between p-3.5 bg-black/20 rounded-2xl hover:bg-white/5 cursor-pointer transition-all border border-transparent hover:border-white/10"><div class="flex items-center gap-3"><div class="p-3 rounded-xl flex-shrink-0 shadow-inner" style="background-color: ${catInfo.color}20; color: ${catInfo.color}"><i data-lucide="${catInfo.icon}" class="w-5 h-5"></i></div><div><h4 class="text-slate-200 font-bold">${t.note || catInfo.name}</h4><p class="text-slate-400 text-[11px] mt-1 tracking-wide">${catInfo.name} • ${t.date.split('-').reverse().join('/')}</p></div></div><span class="font-bold text-lg ${t.type === 'income' ? 'text-green-400' : 'text-red-400'}">${t.type === 'income' ? '+' : '-'}${formatVND(t.amount)}</span></div>`;
@@ -1450,7 +1512,7 @@
             const person = document.getElementById('inpDebtPerson').value.trim();
             const amount = parseInt(document.getElementById('inpDebtAmount').value.replace(/\D/g, ''));
             const date = document.getElementById('inpDebtDate').value; 
-            const note = document.getElementById('inpDebtNote').value.trim(); // Lấy giá trị ghi chú
+            const note = document.getElementById('inpDebtNote').value.trim();
             
             if(!person || isNaN(amount) || amount <= 0) return showToast("Nhập sai thông tin!", "error"); 
             let months = 0; let rate = 0; let totalToPay = amount; 
@@ -1469,7 +1531,7 @@
                     d.originalAmount = amount; 
                     d.interestRate = rate; 
                     d.date = date; 
-                    d.note = note; // Cập nhật ghi chú
+                    d.note = note;
                     d.isInstallment = isDebtInstallment; 
                     d.months = months; 
                     d.type = debtType; 
@@ -1485,7 +1547,7 @@
                     originalAmount: amount, 
                     interestRate: rate, 
                     date, 
-                    note, // Lưu ghi chú
+                    note, 
                     status: 'pending', 
                     isInstallment: isDebtInstallment, 
                     months, 
@@ -1503,24 +1565,66 @@
                 const isLend = d.type === 'lend'; const color = isLend ? 'text-green-400' : 'text-red-400'; 
                 
                 let actionHtml = ''; 
+                let detailHtml = '';
+                
                 if(d.status === 'pending') { 
                     if(d.isInstallment) { 
-                        actionHtml = `<div class="mt-2 flex items-center justify-between"><div class="w-full bg-white/10 rounded-full h-1.5 mr-3"><div class="bg-blue-500 h-1.5 rounded-full" style="width: ${(d.paidMonths/d.months)*100}%"></div></div><button type="button" onclick="editDebt('${d.id}')" class="text-[10px] bg-slate-500/20 text-slate-400 px-3 py-1.5 rounded-xl font-bold hover:bg-slate-500 hover:text-white transition-all mr-2">Sửa</button> <button type="button" onclick="payInstallment('${d.id}')" class="text-[10px] bg-blue-500/20 text-blue-400 px-3 py-1.5 rounded-xl font-bold whitespace-nowrap hover:bg-blue-500 hover:text-white transition-all">Đóng T.${d.paidMonths+1}</button></div>`; 
+                        const startDate = new Date(d.date);
+                        startDate.setMonth(startDate.getMonth() + d.paidMonths);
+                        const today = new Date(); today.setHours(0,0,0,0);
+                        const isOverdue = startDate < today;
+                        const dateColor = isOverdue ? 'text-red-400 font-bold' : 'text-yellow-400';
+
+                        detailHtml = `<div class="text-[11px] mt-2.5 p-2.5 bg-black/40 rounded-xl border ${isOverdue ? 'border-red-500/30' : 'border-white/5'}">
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="text-slate-400">Tiến độ: <b class="text-blue-400 text-xs">${d.paidMonths}/${d.months}</b> kỳ</span>
+                                <span class="text-slate-400">Còn lại: <b class="text-white text-xs">${formatVND(remaining)}</b></span>
+                            </div>
+                            <div class="flex justify-between items-center">
+                                <span class="text-slate-400">Hạn kỳ T.${d.paidMonths + 1}:</span> 
+                                <span class="${dateColor}">${startDate.toLocaleDateString('vi-VN')} ${isOverdue ? '(Trễ)' : ''}</span> 
+                            </div>
+                        </div>`;
+
+                        actionHtml = `<div class="mt-3 flex justify-end gap-2">
+                            <button type="button" onclick="editDebt('${d.id}')" class="text-[10px] bg-slate-500/20 text-slate-300 px-4 py-2 rounded-xl font-bold hover:bg-slate-500 hover:text-white transition-all">Sửa</button> 
+                            <button type="button" onclick="payInstallment('${d.id}')" class="text-[10px] bg-blue-500/20 text-blue-400 px-4 py-2 rounded-xl font-bold whitespace-nowrap hover:bg-blue-500 hover:text-white transition-all shadow-md">Đóng T.${d.paidMonths+1}</button>
+                        </div>`; 
                     } else { 
-                        actionHtml = `<div class="flex gap-2 justify-end mt-2"><button type="button" onclick="editDebt('${d.id}')" class="text-[10px] bg-slate-500/20 text-slate-400 px-3 py-1.5 rounded-xl font-bold hover:bg-slate-500 hover:text-white transition-all">Sửa</button> <button type="button" onclick="markDebtPaid('${d.id}')" class="text-[10px] bg-green-500/20 text-green-400 px-3 py-1.5 rounded-xl font-bold hover:bg-green-500 hover:text-white transition-all">Xong</button><button type="button" onclick="deleteDebt('${d.id}')" class="text-[10px] bg-red-500/20 text-red-400 px-3 py-1.5 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all">Xóa</button></div>`; 
+                        actionHtml = `<div class="flex gap-2 justify-end mt-3">
+                            <button type="button" onclick="editDebt('${d.id}')" class="text-[10px] bg-slate-500/20 text-slate-300 px-4 py-2 rounded-xl font-bold hover:bg-slate-500 hover:text-white transition-all">Sửa</button> 
+                            <button type="button" onclick="markDebtPaid('${d.id}')" class="text-[10px] bg-green-500/20 text-green-400 px-4 py-2 rounded-xl font-bold hover:bg-green-500 hover:text-white transition-all shadow-md">Hoàn tất</button>
+                            <button type="button" onclick="deleteDebt('${d.id}')" class="text-[10px] bg-red-500/10 text-red-400 px-3 py-2 rounded-xl font-bold hover:bg-red-500 hover:text-white transition-all"><i data-lucide="trash-2" class="w-3.5 h-3.5"></i></button>
+                        </div>`; 
                     } 
                 } else { 
-                    actionHtml = `<span class="text-[10px] bg-white/10 text-slate-400 px-2 py-1 rounded font-bold mt-2 inline-block">Đã thanh toán xong</span>`; 
+                    actionHtml = `<div class="mt-3 flex justify-between items-center"><span class="text-[10px] bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded-md font-bold inline-block"><i data-lucide="check-circle" class="w-3 h-3 inline mr-1 mb-0.5"></i>Đã tất toán</span> <button type="button" onclick="deleteDebt('${d.id}')" class="text-[10px] text-slate-500 hover:text-red-400 font-bold underline transition-colors">Xóa lịch sử</button></div>`; 
                 } 
                 
-                // Hiển thị phần ghi chú nếu có
-                const noteHtml = d.note ? `<p class="text-blue-300/80 text-[11px] mt-1 font-medium bg-blue-500/10 inline-block px-2 py-0.5 rounded">${d.note}</p>` : '';
+                const noteHtml = d.note ? `<p class="text-blue-300/80 text-[12px] mt-1.5 font-medium bg-blue-500/10 inline-block px-2.5 py-1 rounded-lg border border-blue-500/20 w-fit"><i data-lucide="info" class="w-3 h-3 inline mr-1"></i>${d.note}</p>` : '';
 
-                return `<div class="bg-black/30 border border-white/5 p-4 rounded-2xl ${d.status==='paid'?'opacity-50 grayscale':''}"><div class="flex justify-between items-start"><div><h4 class="text-white font-bold">${d.person}</h4><p class="text-slate-400 text-[11px] mt-1">${isLend?'Cho vay':'Nợ/Góp'} • ${d.date.split('-').reverse().join('/')}</p>${noteHtml}</div><span class="font-black ${color} text-lg">${formatVND(remaining)}</span></div>${actionHtml}</div>`; 
-            }).join('') || '<div class="text-center text-slate-500 py-10">Sổ nợ trống.</div>'; 
+                return `<div class="bg-black/40 border border-white/5 p-5 rounded-3xl ${d.status==='paid'?'opacity-60':''} hover:border-white/10 transition-all shadow-lg">
+                    <div class="flex justify-between items-start gap-4">
+                        <div class="flex-1">
+                            <h4 class="text-white font-black text-lg leading-tight mb-1">${d.person}</h4>
+                            <p class="text-slate-400 text-[10px] uppercase tracking-widest font-bold bg-white/5 inline-block px-2 py-0.5 rounded-md">${isLend?'CHO VAY':'NỢ/GÓP'} • ${d.date.split('-').reverse().join('/')}</p>
+                        </div>
+                        <div class="text-right flex-shrink-0 bg-white/5 px-3 py-2 rounded-xl border border-white/5">
+                            <p class="text-[9px] text-slate-500 uppercase font-black mb-0.5 tracking-widest">${d.isInstallment ? 'TỔNG GỐC' : 'SỐ TIỀN'}</p>
+                            <span class="font-black ${color} text-lg drop-shadow-sm">${formatVND(d.amount)}</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-col">
+                        ${noteHtml}
+                        ${detailHtml}
+                    </div>
+                    ${actionHtml}
+                </div>`; 
+            }).join('') || '<div class="text-center text-slate-500 py-10 font-medium">Sổ nợ trống.</div>'; 
             document.getElementById('totalLend').innerText = formatVND(totalLend); 
             document.getElementById('totalBorrow').innerText = formatVND(totalBorrow); 
-            document.getElementById('debtListDisplay').innerHTML = html; 
+            document.getElementById('debtListDisplay').innerHTML = `<div class="space-y-4 pb-2">${html}</div>`; 
+            renderIcons();
         }
 
         function payInstallment(id) { 
@@ -1606,5 +1710,3 @@
     </script>
 </body>
 </html>
-
-
