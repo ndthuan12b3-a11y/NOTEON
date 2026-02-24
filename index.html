@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Workspace Pro </title>
+    <title>Workspace Pro - Stable Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -178,7 +178,7 @@
         <div class="max-w-md w-full p-8 md:p-10 text-center glass-card rounded-[3rem] transform transition-transform duration-500 hover:scale-105">
             <div class="mb-8 flex justify-center relative"><div class="absolute inset-0 bg-blue-500 blur-2xl opacity-30 rounded-full animate-pulse"></div><div class="p-6 bg-slate-900/80 border border-white/10 rounded-full relative z-10 shadow-xl"><i data-lucide="shield-check" class="w-14 h-14 text-blue-400"></i></div></div>
             <h2 class="text-3xl font-black mb-2 uppercase tracking-widest text-white drop-shadow-lg">WORKSPACE</h2>
-            <p class="text-slate-400 text-sm mb-8 font-medium">Nhập mã bất kỳ để tạo tài khoản của bạn </p>
+            <p class="text-slate-400 text-sm mb-8 font-medium">Truy cập Dữ liệu Kép (Cloud) & Offline</p>
             <input type="password" id="accessKey" onkeypress="if(event.key === 'Enter') unlockApp()" placeholder="••••••••" class="glass-input w-full rounded-2xl py-4 px-6 mb-6 text-center tracking-[0.5em] text-lg focus:border-blue-500 transition-all shadow-inner">
             <button id="unlockBtn" onclick="unlockApp()" class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 py-4 rounded-2xl font-bold transition-all shadow-lg active:scale-95 text-white flex justify-center items-center gap-2 text-lg"><span>ĐĂNG NHẬP / TẠO MỚI</span></button>
         </div>
@@ -214,7 +214,7 @@
             </div>
 
             <div id="noteAddBtnContainer" class="fixed bottom-8 left-0 right-0 flex justify-center z-40 pointer-events-none transition-all duration-300">
-                <button onclick="window.openNoteAddModal()" class="pointer-events-auto bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 px-8 rounded-full shadow-[0_10px_40px_rgba(59,130,246,0.4)] hover:shadow-[0_10px_50px_rgba(59,130,246,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 font-black tracking-wide text-base border border-blue-400/30"><i data-lucide="plus" class="w-6 h-6"></i> THÊM GHI CHÚ</button>
+                <button onclick="window.openNoteAddModal()" class="pointer-events-auto bg-gradient-to-r from-blue-500 to-indigo-500 text-white p-4 px-8 rounded-full shadow-[0_10px_40px_rgba(59,130,246,0.4)] hover:shadow-[0_10px_50px_rgba(59,130,246,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 font-black tracking-wide text-base border border-blue-400/30"><i data-lucide="plus" class="w-6 h-6"></i> </button>
             </div>
             <div id="noteFloatingControls" class="fixed bottom-8 right-6 md:bottom-10 md:right-10 flex flex-col gap-4 items-end z-40">
                 <button id="clearTrashBtn" style="display:none" onclick="window.clearFullTrash()" class="bg-red-600/90 backdrop-blur-md text-white border border-red-400 px-6 py-3 rounded-2xl text-xs font-black hover:bg-red-500 transition-all shadow-[0_0_30px_rgba(239,68,68,0.4)] active:scale-95 tracking-widest">DỌN RÁC</button>
@@ -269,7 +269,7 @@
             <div class="glass-card rounded-[2rem] p-6 mb-8">
                 <div class="flex justify-between items-center mb-6">
                     <h3 class="text-white font-bold flex items-center gap-2 text-lg"><i data-lucide="users" class="w-5 h-5 text-purple-400"></i> Phân bổ người chi</h3>
-                    <button onclick="addFinMember()" class="text-xs font-bold bg-purple-500/20 text-purple-300 px-4 py-2.5 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/30">+ Thêm người</button>
+                    <button onclick="openFinMemberManager()" class="text-xs font-bold bg-purple-500/20 text-purple-300 px-4 py-2.5 rounded-xl hover:bg-purple-500 hover:text-white transition-all border border-purple-500/30"><i data-lucide="settings-2" class="w-4 h-4 inline"></i> Quản lý</button>
                 </div>
                 <div id="finMemberStatsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-5"></div>
             </div>
@@ -291,11 +291,23 @@
 
             <div class="fixed bottom-8 left-0 right-0 flex justify-center z-40 pointer-events-none">
                 <button onclick="openFinAddModal()" class="pointer-events-auto bg-gradient-to-r from-emerald-500 to-cyan-500 text-white p-4 px-8 rounded-full shadow-[0_10px_40px_rgba(16,185,129,0.4)] hover:shadow-[0_10px_50px_rgba(16,185,129,0.6)] hover:-translate-y-1 transition-all duration-300 flex items-center gap-3 font-black tracking-wide text-base border border-emerald-400/30">
-                    <i data-lucide="plus" class="w-6 h-6"></i> THÊM GIAO DỊCH
+                    <i data-lucide="plus" class="w-6 h-6"></i> 
                 </button>
             </div>
         </div>
     </main>
+
+    <div id="finMemberModal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-[6011] hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-white/10 w-full max-w-md rounded-[2.5rem] p-6 modal-enter relative">
+            <button onclick="closeFinModal('finMemberModal')" class="absolute top-6 right-6 text-slate-400 bg-black/20 p-2 rounded-full hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h2 class="text-xl font-bold mb-6 text-white flex items-center gap-2"><i data-lucide="users" class="text-purple-400"></i> Quản lý Người chi</h2>
+            <div class="flex gap-2 mb-6">
+                <input type="text" id="newFinMemberName" onkeypress="if(event.key === 'Enter') addFinMember()" placeholder="Tên (VD: Quỹ chung,Tên của bạn...)" class="glass-input flex-1 rounded-xl px-4 py-3">
+                <button type="button" onclick="addFinMember()" class="bg-purple-600 px-5 rounded-xl font-bold text-white hover:bg-purple-500 transition-colors shadow-md">+</button>
+            </div>
+            <div id="finMemberListDisplay" class="space-y-2 max-h-60 overflow-y-auto pr-2 hide-scrollbar"></div>
+        </div>
+    </div>
 
     <div id="noteModal" class="fixed inset-0 z-[6000] hidden bg-[#020617]/80 backdrop-blur-md flex items-center justify-center p-4 overflow-y-auto"><div class="bg-slate-900 border border-white/10 w-full max-w-lg rounded-[2.5rem] p-6 shadow-2xl relative modal-enter"><h2 id="noteModalTitle" class="text-2xl font-bold mb-6 text-white tracking-tight"></h2><div id="colorPicker" class="flex gap-4 mb-8 justify-center bg-black/20 p-4 rounded-2xl flex-wrap border border-white/5"><div onclick="window.setNoteColor('rgba(15, 23, 42, 0.45)')" class="color-dot bg-slate-700 active" data-color="rgba(15, 23, 42, 0.45)"></div><div onclick="window.setNoteColor('rgba(127, 29, 29, 0.45)')" class="color-dot bg-red-900" data-color="rgba(127, 29, 29, 0.45)"></div><div onclick="window.setNoteColor('rgba(20, 83, 45, 0.45)')" class="color-dot bg-green-900" data-color="rgba(20, 83, 45, 0.45)"></div><div onclick="window.setNoteColor('rgba(30, 58, 138, 0.45)')" class="color-dot bg-blue-900" data-color="rgba(30, 58, 138, 0.45)"></div><div onclick="window.setNoteColor('rgba(88, 28, 135, 0.45)')" class="color-dot bg-purple-900" data-color="rgba(88, 28, 135, 0.45)"></div><div onclick="window.setNoteColor('rgba(120, 53, 15, 0.45)')" class="color-dot bg-orange-900" data-color="rgba(120, 53, 15, 0.45)"></div></div><input id="nTitle" type="text" placeholder="Tiêu đề ghi chú..." class="glass-input w-full rounded-2xl p-4 mb-5 text-xl"><div class="flex justify-between items-end mb-2 px-2"><label class="block text-[11px] font-black tracking-wider text-slate-400 uppercase">Phân loại</label><button type="button" onclick="window.openNoteCatManager()" class="text-[10px] text-blue-400 font-bold uppercase hover:text-blue-300">+ Quản lý</button></div>
         <div class="relative w-full mb-6">
@@ -342,7 +354,10 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[11px] font-black uppercase tracking-wider text-slate-400 mb-2">Người chi / Nguồn thu</label>
+                    <div class="flex justify-between items-end mb-2">
+                        <label class="block text-[11px] font-black uppercase tracking-wider text-slate-400">Người chi / Nguồn thu</label>
+                        <button type="button" onclick="openFinMemberManager()" class="text-[10px] text-purple-400 font-bold uppercase hover:text-purple-300">+ Quản lý</button>
+                    </div>
                     <div class="relative">
                         <select id="finInpMember" class="glass-input w-full rounded-2xl p-4 appearance-none pr-10"></select>
                         <i data-lucide="chevron-down" class="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-purple-400 pointer-events-none"></i>
@@ -644,9 +659,10 @@
             income: [ { id: 'salary', icon: 'wallet', name: 'Tiền lương', color: '#10b981' }, { id: 'business', icon: 'briefcase', name: 'Kinh doanh', color: '#0ea5e9' }, { id: 'debt_collect', icon: 'hand-coins', name: 'Thu nợ / Đi vay', color: '#14b8a6' } ] 
         };
 
+        // Đã sửa mặc định members thành mảng trống []
         let currentUserData = { 
             notes: [], trash: [], noteCats: ["Tất cả", "Học tập", "Công việc"], 
-            finance: { transactions: [], members: ['Quỹ Chung', 'Thuận'], categories: defaultFinCats, recurrings: [], debts: [], goals: [], reminders: [] },
+            finance: { transactions: [], members: [], categories: defaultFinCats, recurrings: [], debts: [], goals: [], reminders: [] },
             settings: { bgMode: 'animated', blurLevel: 24, autoLockMin: 3 },
             lastActive: Date.now(),
             isLocked: false
@@ -868,7 +884,7 @@
 
         function factoryReset() {
             showConfirmDialog("XÓA TOÀN BỘ DỮ LIỆU?", "Không thể hoàn tác. Mọi Ghi chú, Tài chính và Cài đặt sẽ bị xóa trắng.", () => {
-                currentUserData = { notes: [], trash: [], noteCats: ["Tất cả", "Học tập", "Công việc"], finance: { transactions: [], members: ['Quỹ Chung', 'Thuận'], categories: defaultFinCats, recurrings: [], debts: [], goals: [], reminders: [] }, settings: { bgMode: 'animated', blurLevel: 24, autoLockMin: 3 }, lastActive: Date.now(), isLocked: false };
+                currentUserData = { notes: [], trash: [], noteCats: ["Tất cả", "Học tập", "Công việc"], finance: { transactions: [], members: [], categories: defaultFinCats, recurrings: [], debts: [], goals: [], reminders: [] }, settings: { bgMode: 'animated', blurLevel: 24, autoLockMin: 3 }, lastActive: Date.now(), isLocked: false };
                 syncToCloud(); renderNotes(); renderFinanceDashboard(); applyCSS();
                 showToast("Đã thiết lập lại trạng thái ban đầu");
                 closeSystemModal('settingsModal');
@@ -955,17 +971,17 @@
                     currentUserData.lastActive = now;
 
                 } else { 
-                    currentUserData = { notes: [], trash: [], noteCats: ["Tất cả", "Học tập", "Công việc"], finance: { transactions: [], members: ['Quỹ Chung', 'Thuận'], categories: defaultFinCats, recurrings: [], debts: [], goals: [], reminders: [] }, settings: { bgMode: 'animated', blurLevel: 24, autoLockMin: 3 }, lastActive: Date.now(), isLocked: false };
+                    currentUserData = { notes: [], trash: [], noteCats: ["Tất cả", "Học tập", "Công việc"], finance: { transactions: [], members: [], categories: defaultFinCats, recurrings: [], debts: [], goals: [], reminders: [] }, settings: { bgMode: 'animated', blurLevel: 24, autoLockMin: 3 }, lastActive: Date.now(), isLocked: false };
                     await syncToCloud(); 
                 }
 
                 if(!currentUserData.notes) currentUserData.notes = [];
                 if(!currentUserData.trash) currentUserData.trash = [];
                 if(!currentUserData.noteCats) currentUserData.noteCats = ["Tất cả", "Học tập", "Công việc"];
-                if(!currentUserData.finance || Array.isArray(currentUserData.finance)) currentUserData.finance = { transactions: [], members: ['Quỹ Chung', 'Thuận'], categories: defaultFinCats, recurrings: [], debts: [], goals: [], reminders: [] };
+                if(!currentUserData.finance || Array.isArray(currentUserData.finance)) currentUserData.finance = { transactions: [], members: [], categories: defaultFinCats, recurrings: [], debts: [], goals: [], reminders: [] };
+                if(!currentUserData.finance.members) currentUserData.finance.members = [];
                 if(!currentUserData.settings) currentUserData.settings = { bgMode: 'animated', blurLevel: 24, autoLockMin: 3 };
                 
-                // Đồng bộ danh mục riêng cho Sổ Nợ (chống lỗi cho các mã cũ)
                 if(!currentUserData.finance.categories.expense.find(c => c.id === 'debt_pay')) currentUserData.finance.categories.expense.push({ id: 'debt_pay', icon: 'credit-card', name: 'Trả nợ / Cho vay', color: '#f97316' });
                 if(!currentUserData.finance.categories.income.find(c => c.id === 'debt_collect')) currentUserData.finance.categories.income.push({ id: 'debt_collect', icon: 'hand-coins', name: 'Thu nợ / Đi vay', color: '#14b8a6' });
                 
@@ -1051,7 +1067,7 @@
                 title.innerHTML = `NOTE OS <button onclick="showHelp('notes')" class="w-6 h-6 rounded-full border-2 border-white/50 text-white/50 flex items-center justify-center text-sm font-black hover:bg-white hover:text-blue-600 transition-colors ml-2 mb-1">!</button>`; body.classList.add('theme-notes'); if(isTrashView) body.classList.add('trash-mode'); renderNotes();
             } else {
                 tNotes.classList.add('hidden-tab'); tFin.classList.remove('hidden-tab'); btnF.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all bg-emerald-500/90 text-white shadow-lg flex items-center justify-center gap-2"; btnN.className = "flex-1 lg:w-36 py-3 rounded-xl font-bold text-sm transition-all text-slate-400 hover:text-white flex items-center justify-center gap-2 bg-transparent";
-                title.innerHTML = ` QUỸ <button onclick="showHelp('finance')" class="w-6 h-6 rounded-full border-2 border-white/50 text-white/50 flex items-center justify-center text-sm font-black hover:bg-white hover:text-emerald-600 transition-colors ml-2 mb-1">!</button>`; body.classList.add('theme-finance'); hideMenus(); renderFinanceDashboard();
+                title.innerHTML = `QUẢN LÝ QUỸ <button onclick="showHelp('finance')" class="w-6 h-6 rounded-full border-2 border-white/50 text-white/50 flex items-center justify-center text-sm font-black hover:bg-white hover:text-emerald-600 transition-colors ml-2 mb-1">!</button>`; body.classList.add('theme-finance'); hideMenus(); renderFinanceDashboard();
             }
             renderIcons();
         }
@@ -1066,8 +1082,8 @@
             const filterBar = document.getElementById('filterBar'); filterBar.innerHTML = ''; currentUserData.noteCats.forEach(c => { const btn = document.createElement('button'); btn.className = `px-5 py-2 rounded-full text-sm font-bold border transition-all whitespace-nowrap flex-shrink-0 ${currentNoteFilter === c ? 'tag-active border-transparent' : 'glass-card text-slate-300 hover:text-white hover:border-white/20'}`; btn.innerText = c; btn.onclick = () => { currentNoteFilter = c; isTrashView = false; renderNotes(); }; filterBar.appendChild(btn); });
             document.getElementById('nTag').innerHTML = currentUserData.noteCats.filter(c => c !== "Tất cả").map(c => `<option value="${c}">${c}</option>`).join('');
             grid.innerHTML = ''; let dataSource = isTrashView ? currentUserData.trash : currentUserData.notes; const filtered = dataSource.filter(n => (currentNoteFilter === "Tất cả" || n.tag === currentNoteFilter) && (n.title.toLowerCase().includes(search) || n.content.toLowerCase().includes(search))).sort((a,b) => b.id - a.id);
-            if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-white/10 text-slate-500'} rounded-[2rem] p-10 text-center font-bold">Không gian trống...</div>`;
-            filtered.forEach(n => { const div = document.createElement('div'); div.className = `bento-card p-5 md:p-6 rounded-[2rem] relative`; if(!isTrashView) div.style.background = (n.color || 'rgba(15, 23, 42, 0.45)'); const highlight = (text) => { if(!search) return text; const regex = new RegExp(`(${search})`, 'gi'); return text.replace(regex, '<mark class="bg-blue-500/50 text-white rounded px-1">$1</mark>'); }; div.innerHTML = `<div class="flex justify-between items-start mb-4"><span class="text-[9px] font-black uppercase tracking-widest bg-white/10 border border-white/5 text-white px-3 py-1.5 rounded-full shadow-inner">${n.tag}</span><div class="flex gap-2 relative z-10">${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/40 hover:text-green-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md"><i data-lucide="check" class="w-4 h-4"></i></button>` : ''}<button onclick="event.stopPropagation(); window.showMobileMenu(${n.id}, event, ${isTrashView})" class="text-white/40 hover:text-blue-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md md:hidden"><i data-lucide="more-vertical" class="w-4 h-4"></i></button></div></div><h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-sm">${highlight(n.title) || 'Trống'}</h3><p class="text-slate-300/90 text-sm line-clamp-6 leading-relaxed whitespace-pre-wrap">${highlight(n.content) || '...'}</p>`; let lastClick = 0; div.onclick = (e) => { const ct = new Date().getTime(); if (ct - lastClick < 400 && !isTrashView) { selectedNoteId = n.id; window.openNoteEditModal(); } lastClick = ct; }; div.oncontextmenu = (e) => { e.preventDefault(); selectedNoteId = n.id; showMenu(isTrashView ? 'trashActions' : 'noteActions', e); }; grid.appendChild(div); }); renderIcons();
+            if(filtered.length === 0) grid.innerHTML = `<div class="col-span-full border-2 border-dashed ${isTrashView ? 'border-red-900/50 text-red-500/50' : 'border-white/10 text-slate-500'} rounded-[2rem] p-10 text-center font-bold">Chưa có ghi chú!...</div>`;
+            filtered.forEach(n => { const div = document.createElement('div'); div.className = `bento-card p-5 md:p-6 rounded-[2rem] relative`; if(!isTrashView) div.style.background = (n.color || 'rgba(15, 23, 42, 0.45)'); const highlight = (text) => { if(!search) return text; const regex = new RegExp(`(${search})`, 'gi'); return text.replace(regex, '<mark class="bg-blue-500/50 text-white rounded px-1">$1</mark>'); }; div.innerHTML = `<div class="flex justify-between items-start mb-4"><span class="text-[9px] font-black uppercase tracking-widest bg-white/10 border border-white/5 text-white px-3 py-1.5 rounded-full shadow-inner">${n.tag}</span><div class="flex gap-2 relative z-10">${!isTrashView ? `<button onclick="event.stopPropagation(); window.fastComplete(${n.id})" class="text-white/40 hover:text-green-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md"><i data-lucide="check" class="w-4 h-4"></i></button>` : ''}<button onclick="event.stopPropagation(); window.showMobileMenu(${n.id}, event, ${isTrashView})" class="text-white/40 hover:text-blue-400 hover:bg-white/10 transition-all bg-black/20 p-2 rounded-full backdrop-blur-md md:hidden"><i data-lucide="more-vertical" class="w-4 h-4"></i></button></div></div><h3 class="font-extrabold text-xl mb-3 line-clamp-2 text-white drop-shadow-sm">${highlight(n.title) || 'Chưa có lịch sử '}</h3><p class="text-slate-300/90 text-sm line-clamp-6 leading-relaxed whitespace-pre-wrap">${highlight(n.content) || '...'}</p>`; let lastClick = 0; div.onclick = (e) => { const ct = new Date().getTime(); if (ct - lastClick < 400 && !isTrashView) { selectedNoteId = n.id; window.openNoteEditModal(); } lastClick = ct; }; div.oncontextmenu = (e) => { e.preventDefault(); selectedNoteId = n.id; showMenu(isTrashView ? 'trashActions' : 'noteActions', e); }; grid.appendChild(div); }); renderIcons();
         }
         window.toggleNoteTrashView = function() { isTrashView = !isTrashView; document.getElementById('noteSearchInput').value = ""; renderNotes(); }
         window.saveNote = function() { const title = document.getElementById('nTitle').value.trim(), content = document.getElementById('nContent').value.trim(), tag = document.getElementById('nTag').value; if(!title && !content) return showToast("Ghi chú trống!", "error"); if(selectedNoteId) { const n = currentUserData.notes.find(x => x.id === selectedNoteId); if(n) Object.assign(n, { title, content, tag, color: selectedNoteColor }); showToast("Đã cập nhật", "success"); } else { currentUserData.notes.push({ id: Date.now(), title, content, tag, color: selectedNoteColor }); showToast("Đã lưu ghi chú", "success"); } window.closeNoteModal(); renderNotes(); syncToCloud(); }
@@ -1159,11 +1175,91 @@
             } catch(e) { console.error("Lỗi Render Dashboard:", e); }
         }
 
+        // Đã cập nhật chức năng quản lý người chi hoàn thiện
+        function openFinMemberManager() {
+            document.getElementById('finMemberModal').classList.remove('hidden');
+            renderFinMemberList();
+        }
+        function renderFinMemberList() {
+            const list = document.getElementById('finMemberListDisplay');
+            const mems = getFinMembers();
+            if(mems.length === 0) {
+                list.innerHTML = '<div class="text-slate-500 text-center py-6 text-sm border-2 border-dashed border-white/10 rounded-2xl">Danh sách người chi trống.<br>Hãy thêm người bên trên!</div>';
+            } else {
+                list.innerHTML = mems.map(m => `
+                    <div class="flex justify-between items-center bg-black/20 border border-white/5 p-3 rounded-xl mb-2 hover:border-white/10 transition-colors">
+                        <span class="font-bold text-sm text-slate-200">${m}</span>
+                        <div class="flex gap-1">
+                            <button type="button" onclick="editFinMember('${m}')" class="text-slate-500 hover:text-blue-400 p-2 rounded-lg transition-all"><i data-lucide="edit-3" class="w-4 h-4"></i></button>
+                            <button type="button" onclick="deleteFinMember('${m}')" class="text-slate-500 hover:text-red-500 p-2 rounded-lg transition-all"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            renderIcons();
+        }
+        function addFinMember() {
+            const name = document.getElementById('newFinMemberName').value.trim();
+            if(!name) return showToast("Vui lòng nhập tên!", "error");
+            if(getFinMembers().includes(name)) return showToast("Tên này đã tồn tại!", "error");
+            currentUserData.finance.members.push(name);
+            document.getElementById('newFinMemberName').value = '';
+            renderFinMemberList(); renderFinanceDashboard(); syncToCloud();
+            showToast("Đã thêm người chi");
+        }
+        function editFinMember(oldName) {
+            const newName = prompt(`Sửa tên "${oldName}" thành:`, oldName);
+            if(newName && newName.trim() && newName.trim() !== oldName) {
+                const name = newName.trim();
+                if(getFinMembers().includes(name)) return showToast("Tên này đã tồn tại!", "error");
+                
+                const idx = currentUserData.finance.members.indexOf(oldName);
+                if(idx > -1) currentUserData.finance.members[idx] = name;
+                
+                currentUserData.finance.transactions.forEach(t => { if(t.member === oldName) t.member = name; });
+                currentUserData.finance.recurrings.forEach(r => { if(r.member === oldName) r.member = name; });
+                
+                renderFinMemberList(); renderFinanceDashboard(); syncToCloud();
+                showToast("Đã cập nhật tên");
+            }
+        }
+        function deleteFinMember(name) {
+            showConfirmDialog("Xóa người này?", "Các giao dịch cũ của họ vẫn sẽ được giữ lại, nhưng tên sẽ không hiển thị trong danh sách tạo mới nữa.", () => {
+                currentUserData.finance.members = currentUserData.finance.members.filter(m => m !== name);
+                renderFinMemberList(); renderFinanceDashboard(); syncToCloud();
+                showToast("Đã xóa khỏi danh sách");
+            });
+        }
+
         function renderFinMemberStats(monthlyData, totalMonthlyOut) {
-            const stats = {}; const mems = getFinMembers(); mems.forEach(m => stats[m] = 0); monthlyData.forEach(t => { if(t.type === 'expense') { const mKey = t.member || mems[0]; if(stats[mKey]!==undefined) stats[mKey] += t.amount; else stats[mKey] = t.amount; } });
-            document.getElementById('finMemberStatsGrid').innerHTML = mems.map((m, i) => {
-                const spent = stats[m] || 0; const pct = totalMonthlyOut === 0 ? 0 : Math.round((spent / totalMonthlyOut) * 100); const colors = ['bg-purple-500', 'bg-blue-500', 'bg-emerald-500', 'bg-pink-500', 'bg-orange-500'];
-                return `<div class="bg-black/20 p-4 rounded-2xl border border-white/5"><div class="flex justify-between items-end mb-3"><span class="font-bold text-slate-200">${m}</span><div class="text-right"><span class="text-white font-black block text-lg">${formatVND(spent)}</span><span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Chiếm ${pct}%</span></div></div><div class="w-full bg-black/40 rounded-full h-2.5 shadow-inner"><div class="${colors[i % colors.length]} h-2.5 rounded-full shadow-md transition-all duration-1000" style="width: ${pct}%"></div></div></div>`;
+            const stats = {}; 
+            const activeMems = getFinMembers();
+            
+            activeMems.forEach(m => stats[m] = 0); 
+            
+            monthlyData.forEach(t => { 
+                if(t.type === 'expense') { 
+                    const mKey = t.member || 'Không xác định'; 
+                    if(stats[mKey] !== undefined) stats[mKey] += t.amount; 
+                    else stats[mKey] = t.amount; 
+                } 
+            });
+
+            const keysToRender = Object.keys(stats).filter(k => stats[k] > 0 || activeMems.includes(k));
+
+            if(keysToRender.length === 0) {
+                document.getElementById('finMemberStatsGrid').innerHTML = '<div class="col-span-full text-slate-500 text-sm italic text-center py-6 border-2 border-dashed border-white/10 rounded-2xl">Chưa có dữ liệu phân bổ.</div>';
+                return;
+            }
+
+            document.getElementById('finMemberStatsGrid').innerHTML = keysToRender.map((m, i) => {
+                const spent = stats[m] || 0; 
+                const pct = totalMonthlyOut === 0 ? 0 : Math.round((spent / totalMonthlyOut) * 100); 
+                const colors = ['bg-purple-500', 'bg-blue-500', 'bg-emerald-500', 'bg-pink-500', 'bg-orange-500'];
+                const isDeleted = !activeMems.includes(m) && m !== 'Không xác định';
+                const displayName = isDeleted ? `${m} (Đã xóa)` : m;
+
+                return `<div class="bg-black/20 p-4 rounded-2xl border border-white/5"><div class="flex justify-between items-end mb-3"><span class="font-bold ${isDeleted ? 'text-slate-500' : 'text-slate-200'}">${displayName}</span><div class="text-right"><span class="text-white font-black block text-lg">${formatVND(spent)}</span><span class="text-slate-400 text-[10px] uppercase font-bold tracking-widest">Chiếm ${pct}%</span></div></div><div class="w-full bg-black/40 rounded-full h-2.5 shadow-inner"><div class="${colors[i % colors.length]} h-2.5 rounded-full shadow-md transition-all duration-1000" style="width: ${pct}%"></div></div></div>`;
             }).join('');
         }
         
@@ -1219,15 +1315,21 @@
             renderIcons();
         }
 
-        function openFinSearchModal() { document.getElementById('finSearchModal').classList.remove('hidden'); const cats = getFinCats(); document.getElementById('finSearchCat').innerHTML = '<option value="all">Danh mục: Mọi</option>' + cats.expense.concat(cats.income).map(c => `<option value="${c.id}">${c.name}</option>`).join(''); document.getElementById('finSearchMem').innerHTML = '<option value="all">Người chi: Mọi</option>' + getFinMembers().map(m => `<option value="${m}">${m}</option>`).join(''); resetFinSearch(); }
+        function getActiveAndHistoricalMembers() {
+            const mems = new Set(getFinMembers());
+            getFinData().forEach(t => { if(t.member && t.member !== 'Không xác định') mems.add(t.member); });
+            return Array.from(mems);
+        }
+
+        function openFinSearchModal() { document.getElementById('finSearchModal').classList.remove('hidden'); const cats = getFinCats(); document.getElementById('finSearchCat').innerHTML = '<option value="all">Danh mục: Mọi</option>' + cats.expense.concat(cats.income).map(c => `<option value="${c.id}">${c.name}</option>`).join(''); document.getElementById('finSearchMem').innerHTML = '<option value="all">Người chi: Mọi</option>' + getActiveAndHistoricalMembers().map(m => `<option value="${m}">${m}</option>`).join(''); resetFinSearch(); }
         function resetFinSearch() { document.getElementById('finSearchInput').value = ''; document.getElementById('finSearchType').value = 'all'; document.getElementById('finSearchCat').value = 'all'; document.getElementById('finSearchMem').value = 'all'; executeFinSearch(); }
         function executeFinSearch() {
             try {
                 const q = document.getElementById('finSearchInput').value.toLowerCase().replace(/[,.]/g, ''), ft = document.getElementById('finSearchType').value, fc = document.getElementById('finSearchCat').value, fm = document.getElementById('finSearchMem').value;
-                const res = getFinData().filter(t => (ft === 'all' || t.type === ft) && (fc === 'all' || t.categoryId === fc) && (fm === 'all' || (t.member || getFinMembers()[0]) === fm) && ((t.note || '').toLowerCase().includes(q) || t.amount.toString().includes(q))).sort((a,b) => new Date(b.date) - new Date(a.date));
+                const res = getFinData().filter(t => (ft === 'all' || t.type === ft) && (fc === 'all' || t.categoryId === fc) && (fm === 'all' || (t.member || 'Không xác định') === fm) && ((t.note || '').toLowerCase().includes(q) || t.amount.toString().includes(q))).sort((a,b) => new Date(b.date) - new Date(a.date));
                 let sum = 0; document.getElementById('finSearchResults').innerHTML = res.map(t => { 
                     if(t.type === 'income') sum += t.amount; else sum -= t.amount; const ci = getCatInfo(t.type, t.categoryId); 
-                    return `<div onclick="editFinTransaction('${t.id}')" class="flex items-center justify-between p-4 bg-black/20 border border-white/5 rounded-2xl cursor-pointer hover:border-cyan-500/50 transition-all"><div class="flex items-center gap-3"><div class="p-3 rounded-xl" style="background-color: ${ci.color}15; color: ${ci.color}"><i data-lucide="${ci.icon}" class="w-5 h-5"></i></div><div><h4 class="text-slate-200 font-bold">${t.note || ci.name}</h4><p class="text-slate-400 text-[11px] mt-1">${t.date.split('-').reverse().join('/')} • ${t.member || getFinMembers()[0]} • ${ci.name}</p></div></div><span class="font-bold text-lg ${t.type === 'income' ? 'text-green-400' : 'text-red-400'}">${t.type === 'income' ? '+' : '-'}${formatVND(t.amount)}</span></div>`; 
+                    return `<div onclick="editFinTransaction('${t.id}')" class="flex items-center justify-between p-4 bg-black/20 border border-white/5 rounded-2xl cursor-pointer hover:border-cyan-500/50 transition-all"><div class="flex items-center gap-3"><div class="p-3 rounded-xl" style="background-color: ${ci.color}15; color: ${ci.color}"><i data-lucide="${ci.icon}" class="w-5 h-5"></i></div><div><h4 class="text-slate-200 font-bold">${t.note || ci.name}</h4><p class="text-slate-400 text-[11px] mt-1">${t.date.split('-').reverse().join('/')} • ${t.member || 'Không xác định'} • ${ci.name}</p></div></div><span class="font-bold text-lg ${t.type === 'income' ? 'text-green-400' : 'text-red-400'}">${t.type === 'income' ? '+' : '-'}${formatVND(t.amount)}</span></div>`; 
                 }).join('') || '<div class="text-center text-slate-500 py-10 font-medium">Không tìm thấy giao dịch phù hợp.</div>';
                 document.getElementById('finSearchCount').innerText = res.length; document.getElementById('finSearchSum').innerText = formatVND(Math.abs(sum)); document.getElementById('finSearchSum').className = sum >= 0 ? "font-black text-2xl ml-2 drop-shadow text-green-400" : "font-black text-2xl ml-2 drop-shadow text-red-400"; 
                 renderIcons();
@@ -1235,14 +1337,23 @@
         }
 
         function openFinAddModal() { editingFinId = null; document.getElementById('finModalTitle').innerText = "Giao dịch mới"; document.getElementById('finBtnDelSingle').classList.add('hidden'); document.getElementById('finTransactionModal').classList.remove('hidden'); setFinType('expense'); popFinMembers(); document.getElementById('finInpAmount').value = ''; document.getElementById('finInpNote').value = ''; document.getElementById('finInpDate').value = new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0, 10); }
-        function editFinTransaction(id) { const tx = getFinData().find(t => t.id === id); if(!tx) return; editingFinId = id; document.getElementById('finModalTitle').innerText = "Sửa giao dịch"; document.getElementById('finBtnDelSingle').classList.remove('hidden'); document.getElementById('finTransactionModal').classList.remove('hidden'); setFinType(tx.type); popFinMembers(); document.getElementById('finInpAmount').value = tx.amount.toLocaleString('vi-VN'); document.getElementById('finInpCategory').value = tx.categoryId; document.getElementById('finInpDate').value = tx.date; document.getElementById('finInpMember').value = tx.member || getFinMembers()[0]; document.getElementById('finInpNote').value = tx.note || ''; }
+        function editFinTransaction(id) { const tx = getFinData().find(t => t.id === id); if(!tx) return; editingFinId = id; document.getElementById('finModalTitle').innerText = "Sửa giao dịch"; document.getElementById('finBtnDelSingle').classList.remove('hidden'); document.getElementById('finTransactionModal').classList.remove('hidden'); setFinType(tx.type); popFinMembers(); document.getElementById('finInpAmount').value = tx.amount.toLocaleString('vi-VN'); document.getElementById('finInpCategory').value = tx.categoryId; document.getElementById('finInpDate').value = tx.date; document.getElementById('finInpMember').value = tx.member || ''; document.getElementById('finInpNote').value = tx.note || ''; }
         function setFinType(type) { currentFinType = type; document.getElementById('finBtnTypeExp').className = `flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type==='expense'?'bg-red-500 text-white shadow-md':'bg-black/20 text-slate-400 hover:text-white'}`; document.getElementById('finBtnTypeInc').className = `flex-1 py-3 rounded-xl text-sm font-bold transition-all ${type==='income'?'bg-emerald-500 text-white shadow-md':'bg-black/20 text-slate-400 hover:text-white'}`; const selectEl = document.getElementById('finInpCategory'); const cats = getFinCats()[type]; selectEl.innerHTML = cats.map(c => `<option value="${c.id}">${c.name}</option>`).join(''); if(editingFinId) { const tx = getFinData().find(t => t.id === editingFinId); if(tx && tx.type === type && !cats.find(c => c.id === tx.categoryId)) selectEl.innerHTML += `<option value="${tx.categoryId}">Khác (Đã xóa)</option>`; } }
-        function popFinMembers() { document.getElementById('finInpMember').innerHTML = getFinMembers().map(m => `<option value="${m}">${m}</option>`).join(''); }
+        
+        function popFinMembers() { 
+            const mems = getFinMembers();
+            if(mems.length === 0) {
+                document.getElementById('finInpMember').innerHTML = '<option value="">-- Chưa có ai (Hãy thêm) --</option>';
+            } else {
+                document.getElementById('finInpMember').innerHTML = mems.map(m => `<option value="${m}">${m}</option>`).join(''); 
+            }
+        }
+        
         function saveFinTransaction() {
             try {
                 const amountStr = document.getElementById('finInpAmount').value.replace(/\D/g, ''); const amount = parseInt(amountStr); 
                 if(isNaN(amount) || amount <= 0) { showToast("Số tiền không hợp lệ!", "error"); return; }
-                const tx = { type: currentFinType, amount: amount, categoryId: document.getElementById('finInpCategory').value, member: document.getElementById('finInpMember').value, date: document.getElementById('finInpDate').value, note: document.getElementById('finInpNote').value.trim() };
+                const tx = { type: currentFinType, amount: amount, categoryId: document.getElementById('finInpCategory').value, member: document.getElementById('finInpMember').value || 'Không xác định', date: document.getElementById('finInpDate').value, note: document.getElementById('finInpNote').value.trim() };
                 if (editingFinId) { const i = getFinData().findIndex(t => t.id === editingFinId); if(i > -1) currentUserData.finance.transactions[i] = { ...currentUserData.finance.transactions[i], ...tx }; showToast("Đã cập nhật giao dịch", "success"); } 
                 else { tx.id = Date.now().toString(); currentUserData.finance.transactions.push(tx); showToast("Đã lưu giao dịch", "success"); }
                 closeFinModal('finTransactionModal'); renderFinanceDashboard(); 
@@ -1257,7 +1368,6 @@
         function renderFinCatList() { document.getElementById('finCatListDisplay').innerHTML = getFinCats()[currentFinCatTab].map(c => `<div class="flex justify-between items-center p-3 bg-black/20 border border-white/5 rounded-xl"><div class="flex items-center gap-3"><div class="p-2 rounded-lg flex-shrink-0" style="background-color: ${c.color}20; color: ${c.color}"><i data-lucide="${c.icon}" class="w-4 h-4"></i></div><span class="text-white font-bold text-sm">${c.name}</span></div><button type="button" onclick="deleteFinCat('${c.id}')" class="text-slate-500 hover:text-red-500 p-2"><i data-lucide="trash-2" class="w-4 h-4"></i></button></div>`).join(''); renderIcons(); }
         function addFinCategory() { const name = document.getElementById('newFinCatName').value.trim(); if (!name) return; currentUserData.finance.categories[currentFinCatTab].push({ id: 'cat_' + Date.now(), icon: 'tag', name: name, color: document.getElementById('newFinCatColor').value }); document.getElementById('newFinCatName').value = ''; document.getElementById('newFinCatColor').value = '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'); renderFinCatList(); setFinType(currentFinType); syncToCloud(); }
         function deleteFinCat(id) { if (getFinCats()[currentFinCatTab].length <= 1) return showToast("Phải giữ lại ít nhất 1 danh mục!", "error"); showConfirmDialog("Xóa danh mục?", "Các giao dịch cũ sẽ được chuyển vào 'Khác'.", () => { currentUserData.finance.categories[currentFinCatTab] = currentUserData.finance.categories[currentFinCatTab].filter(c => c.id !== id); renderFinCatList(); setFinType(currentFinType); syncToCloud(); showToast("Đã xóa danh mục"); }); }
-        function addFinMember() { const n = prompt('Nhập tên người chi trả mới:'); if (n && n.trim()) { if(!getFinMembers().includes(n.trim())) { currentUserData.finance.members.push(n.trim()); renderFinanceDashboard(); syncToCloud(); showToast("Đã thêm thành viên"); } else { showToast("Tên này đã tồn tại!", "error"); } } }
 
         function getFinRecurrings() { return currentUserData.finance.recurrings || []; }
         function openRecurModal() { document.getElementById('recurModal').classList.remove('hidden'); renderRecurrings(); }
@@ -1288,7 +1398,7 @@
         function payRecurEarly(id) {
             const r = getFinRecurrings().find(x => x.id === id); if(!r) return;
             showConfirmDialog("Đóng khoản này ngay?", `Ghi nhận giao dịch [${r.title}] vào sổ của hôm nay và dời lịch hẹn sang tháng sau?`, () => {
-                currentUserData.finance.transactions.push({ id: 'rec_early_'+Date.now(), type: r.type, amount: r.amount, categoryId: r.categoryId, member: r.member || getFinMembers()[0], date: new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0, 10), note: r.title + ' (Đóng trước hạn)' });
+                currentUserData.finance.transactions.push({ id: 'rec_early_'+Date.now(), type: r.type, amount: r.amount, categoryId: r.categoryId, member: r.member || (getFinMembers()[0] || 'Không xác định'), date: new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0, 10), note: r.title + ' (Đóng trước hạn)' });
                 let next = new Date(r.nextDate); next.setMonth(next.getMonth() + 1); r.nextDate = next.toISOString().slice(0,10);
                 renderRecurrings(); renderFinanceDashboard(); syncToCloud(); showToast("Đã thanh toán sớm!");
             });
@@ -1299,7 +1409,7 @@
             currentUserData.finance.recurrings.forEach(r => {
                 let next = new Date(r.nextDate); next.setHours(0,0,0,0);
                 while (next <= today) {
-                    if(r.autoAdd) { currentUserData.finance.transactions.push({ id: 'rec_'+Date.now()+Math.random(), type: r.type, amount: r.amount, categoryId: r.categoryId, member: r.member || getFinMembers()[0], date: next.toISOString().slice(0, 10), note: r.title + ' (Tự động)' }); showToast(`Đã tự ghi sổ: ${r.title}`); } 
+                    if(r.autoAdd) { currentUserData.finance.transactions.push({ id: 'rec_'+Date.now()+Math.random(), type: r.type, amount: r.amount, categoryId: r.categoryId, member: r.member || (getFinMembers()[0] || 'Không xác định'), date: next.toISOString().slice(0, 10), note: r.title + ' (Tự động)' }); showToast(`Đã tự ghi sổ: ${r.title}`); } 
                     else { alertCount++; }
                     next.setMonth(next.getMonth() + 1); r.nextDate = next.toISOString().slice(0,10); updated = true;
                 }
@@ -1350,7 +1460,6 @@
         }
         function deleteGoal(id) { showConfirmDialog("Đập hũ?", "Xóa mục tiêu này?", () => { currentUserData.finance.goals = currentUserData.finance.goals.filter(g => g.id !== id); renderGoalsDashboard(); syncToCloud(); showToast("Đã xóa hũ"); }); }
 
-        // --- CẬP NHẬT GHI SỔ TỰ ĐỘNG CHO TRẢ GÓP ---
         function openDebtModal() { document.getElementById('debtModal').classList.remove('hidden'); renderDebts(); }
         function setDebtType(type) { debtType = type; document.getElementById('btnDebtLend').className = `flex-1 py-2.5 rounded-xl text-sm font-bold transition-all ${type==='lend'?'bg-green-600 text-white shadow-md':'bg-black/20 text-slate-400 hover:text-white'}`; document.getElementById('btnDebtBorrow').className = `flex-1 py-2.5 rounded-xl text-sm font-bold transition-all ${type==='borrow'?'bg-red-600 text-white shadow-md':'bg-black/20 text-slate-400 hover:text-white'}`; }
         function toggleInstallment() { isDebtInstallment = !isDebtInstallment; document.getElementById('debtInstallBox').className = isDebtInstallment ? 'w-5 h-5 rounded border border-blue-500 flex items-center justify-center text-white bg-blue-500' : 'w-5 h-5 rounded border border-blue-500 flex items-center justify-center text-blue-500'; document.getElementById('debtInstallIcon').style.display = isDebtInstallment ? 'block' : 'none'; document.getElementById('installmentOptions').classList.toggle('hidden', !isDebtInstallment); }
@@ -1375,7 +1484,7 @@
             }).join('') || '<div class="text-center text-slate-500 py-10">Sổ nợ trống.</div>'; document.getElementById('totalLend').innerText = formatVND(totalLend); document.getElementById('totalBorrow').innerText = formatVND(totalBorrow); document.getElementById('debtListDisplay').innerHTML = html; 
         }
 
-        // Đã sửa lỗi: Tiền nợ sẽ chui đúng vào mục Nợ, không bị quy vào "Ăn uống" nữa
+        // Đã sửa lỗi lưu sai danh mục khi trả nợ
         function payInstallment(id) { 
             const d = getFinDebts().find(x => x.id === id); if(!d) return; 
             showConfirmDialog("Đóng hụi/trả góp?", `Thanh toán tháng ${d.paidMonths+1}/${d.months}. Tự động ghi vào sổ chi tiêu.`, () => { 
@@ -1391,7 +1500,7 @@
                     catId = found ? found.id : getFinCats().expense[0].id;
                 }
 
-                currentUserData.finance.transactions.push({ id: Date.now().toString(), type: d.type === 'lend' ? 'income' : 'expense', amount: txAmount, categoryId: catId, member: getFinMembers()[0], date: new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0, 10), note: `Đóng góp tháng ${d.paidMonths}: ${d.person}` }); 
+                currentUserData.finance.transactions.push({ id: Date.now().toString(), type: d.type === 'lend' ? 'income' : 'expense', amount: txAmount, categoryId: catId, member: (getFinMembers()[0] || 'Không xác định'), date: new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0, 10), note: `Đóng góp tháng ${d.paidMonths}: ${d.person}` }); 
                 renderDebts(); renderFinanceDashboard(); syncToCloud(); showToast("Đã đóng tiền"); 
             }); 
         }
@@ -1410,14 +1519,13 @@
                     catId = found ? found.id : getFinCats().expense[0].id;
                 }
 
-                currentUserData.finance.transactions.push({ id: Date.now().toString(), type: d.type === 'lend' ? 'income' : 'expense', amount: d.amount, categoryId: catId, member: getFinMembers()[0], date: new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0, 10), note: `${d.type==='lend'?'Thu nợ':'Trả nợ'}: ${d.person}` }); 
+                currentUserData.finance.transactions.push({ id: Date.now().toString(), type: d.type === 'lend' ? 'income' : 'expense', amount: d.amount, categoryId: catId, member: (getFinMembers()[0] || 'Không xác định'), date: new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0, 10), note: `${d.type==='lend'?'Thu nợ':'Trả nợ'}: ${d.person}` }); 
                 renderDebts(); renderFinanceDashboard(); syncToCloud(); showToast("Thanh toán thành công"); 
             }); 
         }
 
         function deleteDebt(id) { showConfirmDialog("Xóa sổ nợ?", "Khoản này sẽ bị xóa khỏi hồ sơ vĩnh viễn.", () => { currentUserData.finance.debts = currentUserData.finance.debts.filter(d => d.id !== id); renderDebts(); syncToCloud(); showToast("Đã xóa"); }); }
 
-        // --- NHẮC NHỞ LẺ (REMINDERS) ---
         function openReminderModal() { document.getElementById('reminderModal').classList.remove('hidden'); renderReminders(); }
         function openAddReminderModal() { editingRemId = null; document.getElementById('remModalTitle').innerText = "Tạo nhắc nhở"; document.getElementById('reminderFormModal').classList.remove('hidden'); document.getElementById('inpRemTitle').value = ''; document.getElementById('inpRemAmount').value = ''; document.getElementById('inpRemDate').value = new Date(Date.now() - new Date().getTimezoneOffset()*60000).toISOString().slice(0, 10); }
         function editReminder(id) { const r = getReminders().find(x => x.id === id); if(!r) return; editingRemId = id; document.getElementById('remModalTitle').innerText = "Sửa nhắc nhở"; document.getElementById('inpRemTitle').value = r.title; document.getElementById('inpRemAmount').value = r.amount ? r.amount.toLocaleString('vi-VN') : ''; document.getElementById('inpRemDate').value = r.date; document.getElementById('reminderFormModal').classList.remove('hidden'); }
@@ -1453,7 +1561,7 @@
             let insightsHTML = ''; if (totalOut === 0) { insightsHTML = '<p>Chưa có dữ liệu.</p>'; } else { let maxCatId = null; let maxAmt = 0; for(let id in categorySums) { if(categorySums[id] > maxAmt) { maxAmt = categorySums[id]; maxCatId = id; } } const topCat = getCatInfo('expense', maxCatId); const percent = Math.round((maxAmt / totalOut) * 100); insightsHTML += `<div class="bg-black/20 p-4 rounded-xl border border-white/5"><strong class="text-pink-400 block mb-1">Lỗ hổng lớn nhất:</strong> Bạn dồn <b class="text-white">${percent}%</b> chi phí vào <b class="text-white">${topCat.name}</b>.</div>`; if (topCat.id === 'food' && percent > 30) insightsHTML += `<div class="bg-black/20 p-4 rounded-xl border border-white/5 mt-3">💡 <strong class="text-cyan-400">Gợi ý:</strong> Hãy nấu ăn tại nhà để tiết kiệm.</div>`; else insightsHTML += `<div class="bg-black/20 p-4 rounded-xl border border-white/5 mt-3">💡 <strong class="text-cyan-400">Gợi ý:</strong> Cân nhắc giảm 10% khoản này để đưa vào tiết kiệm.</div>`; } document.getElementById('aiInsights').innerHTML = insightsHTML; renderIcons();
         }
 
-        function exportFinCSV() { let csv = "\uFEFFLoại,Ngày,Người,Danh mục,Số tiền,Ghi chú\n"; getFinData().forEach(t => { const ci = getCatInfo(t.type, t.categoryId); csv += `${t.type==='income'?'Thu':'Chi'},${t.date},${t.member||getFinMembers()[0]},${ci.name},${t.amount},"${t.note||''}"\n`; }); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv;charset=utf-8;'})); a.download = `Workspace_Finance_${Date.now()}.csv`; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
+        function exportFinCSV() { let csv = "\uFEFFLoại,Ngày,Người,Danh mục,Số tiền,Ghi chú\n"; getFinData().forEach(t => { const ci = getCatInfo(t.type, t.categoryId); csv += `${t.type==='income'?'Thu':'Chi'},${t.date},${t.member||'Không xác định'},${ci.name},${t.amount},"${t.note||''}"\n`; }); const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([csv], {type: 'text/csv;charset=utf-8;'})); a.download = `Workspace_Finance_${Date.now()}.csv`; document.body.appendChild(a); a.click(); document.body.removeChild(a); }
     </script>
 </body>
 </html>
